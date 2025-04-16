@@ -6,7 +6,7 @@ const API_BASE_URL = "https://moyenne-backend.onrender.com/api";
  * @param {Object} options - Options fetch (méthode, headers, body, etc.)
  * @returns {Promise<any>} - Réponse JSON de l'API.
  */
-async function apiFetch(endpoint, options = {}) {
+export async function apiFetch(endpoint, options = {}) {
     try {
         const res = await fetch(`${API_BASE_URL}/${endpoint}`, {
             headers: {
