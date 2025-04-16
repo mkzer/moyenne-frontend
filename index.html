@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion - Gestion Moyennes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
+
+<div class="w-full flex justify-start p-4 absolute top-0 left-0">
+  <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
+</div>
+
+<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-20">
+  <h2 class="text-center text-2xl font-bold mb-4">Connexion</h2>
+
+  <form id="loginForm" class="space-y-4">
+    <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
+    <input type="password" placeholder="Mot de passe" name="motDePasse" required class="input input-bordered w-full" />
+    <button type="submit" class="btn btn-primary w-full">Se connecter</button>
+  </form>
+
+  <p class="text-center mt-4 text-sm">Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a></p>
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const data = {
+      email: form.email.value,
+      motDePasse: form.motDePasse.value
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/utilisateurs/connexion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      if (res.ok && result.token) {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
+        window.location.href = "dashboard.html";
+      } else {
+        alert(result.message || "Identifiants incorrects.");
+      }
+    } catch (err) {
+      alert("Erreur réseau.");
+    }
+  });
+</script>
+</body>
+</html>
