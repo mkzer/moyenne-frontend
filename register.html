@@ -49,7 +49,7 @@
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/utilisateurs/inscription", {
+      const res = await fetch("https://moyenne-backend.onrender.com/api/utilisateurs/inscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
