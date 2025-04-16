@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Connexion - Gestion Moyennes</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+  <!-- ✅ DaisyUI fonctionne déjà via Tailwind Plugin intégré, pas besoin du script jsdelivr -->
+  <script>
+    tailwind.config = {
+      plugins: [daisyui],
+    }
+  </script>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
 
@@ -29,7 +34,7 @@
   </p>
 </div>
 
-<!-- Scripts JS -->
+<!-- ✅ Scripts JS classiques, sans modules -->
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>
 </body>

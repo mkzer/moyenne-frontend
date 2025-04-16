@@ -11,7 +11,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    document.getElementById("nom-utilisateur").textContent = `${utilisateur.prenom} ${utilisateur.nom}`;
+    // Affiche le nom dans l'entête
+    const nomAffichage = document.getElementById("nom-utilisateur");
+    if (nomAffichage) {
+        nomAffichage.textContent = `${utilisateur.prenom} ${utilisateur.nom}`;
+    }
 
     try {
         const notes = await apiFetch("notes", {
@@ -20,7 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        // Regrouper par matière (code sans .x)
+        if (!Array.isArray(notes) || notes.length === 0) {
+            tableau.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400">Aucune note enregistrée.</td></tr>`;
+            return;
+        }
+
         const regroupées = {};
         notes.forEach(note => {
             const codeBase = note.code.split(".")[0];
@@ -37,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     moyenne < 10 ? "bg-yellow-200" :
                         "bg-green-200";
 
-            // Ligne UE
             const ligneUE = document.createElement("tr");
             ligneUE.className = `${couleur} font-bold`;
             ligneUE.innerHTML = `
@@ -48,7 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             `;
             tableau.appendChild(ligneUE);
 
-            // Sous-EC
             matiere.ec.forEach(ec => {
                 const ligneEC = document.createElement("tr");
                 ligneEC.innerHTML = `
@@ -62,7 +68,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     } catch (err) {
-        console.error(err);
-        alert("Impossible de charger les notes.");
+        console.error("Erreur de chargement des notes :", err);
+        tableau.innerHTML = `<tr><td colspan="5" class="text-center text-red-500">Erreur lors du chargement des notes.</td></tr>`;
     }
 });

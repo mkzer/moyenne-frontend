@@ -1,9 +1,10 @@
 // js/auth.js
+
 document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.querySelector("input[type='email']").value;
-    const motDePasse = document.querySelector("input[type='password']").value;
+    const email = document.querySelector("input[name='email']").value;
+    const motDePasse = document.querySelector("input[name='motDePasse']").value;
 
     try {
         const result = await apiFetch("utilisateurs/connexion", {
@@ -13,7 +14,9 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
         alert("Connexion réussie !");
         localStorage.setItem("token", result.token);
-        localStorage.setItem("utilisateurId", result.utilisateur._id);
+        localStorage.setItem("utilisateurId", result.utilisateur.id);
+        localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
+
         window.location.href = "dashboard.html";
     } catch (err) {
         alert(err.message || "Erreur réseau.");

@@ -1,5 +1,4 @@
 // js/register.js
-import { apiFetch } from "./utils.js";
 
 document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -8,7 +7,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const nom = document.querySelector("input[name='nom']").value;
     const email = document.querySelector("input[name='email']").value;
     const motDePasse = document.querySelector("input[name='motDePasse']").value;
-    const parcours = document.querySelector("select[name='programme']").value;
+    const parcours = document.querySelector("select[name='parcours']").value;
 
     const data = { prenom, nom, email, motDePasse, parcours };
 
