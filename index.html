@@ -9,10 +9,12 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
 
+<!-- Logo UL -->
 <div class="w-full flex justify-start p-4 absolute top-0 left-0">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
+<!-- Carte de connexion -->
 <div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-20">
   <h2 class="text-center text-2xl font-bold mb-4">Connexion</h2>
 
@@ -22,38 +24,13 @@
     <button type="submit" class="btn btn-primary w-full">Se connecter</button>
   </form>
 
-  <p class="text-center mt-4 text-sm">Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a></p>
+  <p class="text-center mt-4 text-sm">
+    Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a>
+  </p>
 </div>
 
-<script>
-  document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const form = e.target;
-
-    const data = {
-      email: form.email.value,
-      motDePasse: form.motDePasse.value
-    };
-
-    try {
-      const res = await fetch("http://localhost:5000/api/utilisateurs/connexion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      const result = await res.json();
-      if (res.ok && result.token) {
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
-        window.location.href = "dashboard.html";
-      } else {
-        alert(result.message || "Identifiants incorrects.");
-      }
-    } catch (err) {
-      alert("Erreur réseau.");
-    }
-  });
-</script>
+<!-- Scripts JS -->
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
