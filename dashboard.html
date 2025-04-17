@@ -24,20 +24,8 @@
     </div>
 </div>
 
-<!-- Formulaire + Tableau -->
+<!-- Section principale -->
 <div class="container mx-auto p-4 space-y-6">
-
-    <h2 class="text-2xl font-semibold text-center">Ajouter une note</h2>
-
-    <form id="noteForm" class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        <input type="text" name="code" placeholder="Code EC (ex: 871.1)" class="input input-bordered" required />
-        <input type="text" name="nom" placeholder="Nom de l'EC" class="input input-bordered" required />
-        <input type="number" name="note" step="0.1" placeholder="Note" class="input input-bordered" required />
-        <input type="number" name="coefficient" step="0.1" placeholder="Coefficient" class="input input-bordered" required />
-        <button type="submit" class="btn btn-primary col-span-full">Ajouter</button>
-    </form>
-
-    <hr />
 
     <h2 class="text-xl font-semibold text-center">Mes notes</h2>
 
@@ -54,9 +42,9 @@
             <tbody id="tableau-notes"></tbody>
         </table>
     </div>
+
 </div>
 
-<!-- JS Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/dashboard.js"></script>
 </body>
