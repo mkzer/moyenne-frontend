@@ -12,11 +12,19 @@ document.querySelector("form").addEventListener("submit", async (e) => {
             body: JSON.stringify({ email, motDePasse })
         });
 
-        // Enregistrement dans le stockage local
+        alert("Connexion réussie !");
         localStorage.setItem("token", result.token);
+        localStorage.setItem("utilisateurId", result.utilisateur.id);
         localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
 
-        alert("Connexion réussie !");
+        // ✅ Initialisation automatique des notes après connexion
+        await apiFetch("notes/init", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${result.token}`
+            }
+        });
+
         window.location.href = "dashboard.html";
     } catch (err) {
         alert(err.message || "Erreur réseau.");
