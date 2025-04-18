@@ -1,5 +1,3 @@
-// js/auth.js
-
 document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -17,13 +15,18 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         localStorage.setItem("utilisateurId", result.utilisateur.id);
         localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
 
-        // ✅ Initialisation automatique des notes après connexion
-        await apiFetch("notes/init", {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${result.token}`
-            }
-        });
+        // Initialisation des notes
+        try {
+            await apiFetch("notes/init", {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${result.token}`
+                }
+            });
+            console.log("✔️ Notes initialisées.");
+        } catch (err) {
+            console.warn("⚠️ Notes non initialisées :", err.message);
+        }
 
         window.location.href = "dashboard.html";
     } catch (err) {
