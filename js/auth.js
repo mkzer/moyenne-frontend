@@ -13,20 +13,24 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         alert("Connexion réussie !");
         localStorage.setItem("token", result.token);
         localStorage.setItem("utilisateurId", result.utilisateur.id);
+
+        // ✅ Normalisation du parcours
+        const parcoursBrut = result.utilisateur.parcours;
+        let parcoursNormalise = parcoursBrut;
+
+        if (parcoursBrut === "M1 EEA MTI") parcoursNormalise = "MTI";
+        if (parcoursBrut === "M1 EEA ISHM") parcoursNormalise = "ISHM";
+        if (parcoursBrut === "M1 EEA IMEEN") parcoursNormalise = "IMEEN";
+
+        result.utilisateur.parcours = parcoursNormalise;
+
         localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
 
-        // Initialisation des notes
-        try {
-            await apiFetch("notes/init", {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${result.token}`
-                }
-            });
-            console.log("✔️ Notes initialisées.");
-        } catch (err) {
-            console.warn("⚠️ Notes non initialisées :", err.message);
-        }
+        // Appel de l'initialisation automatique des notes
+        await apiFetch("notes/init", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${result.token}` }
+        });
 
         window.location.href = "dashboard.html";
     } catch (err) {
