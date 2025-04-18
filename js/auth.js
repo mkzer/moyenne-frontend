@@ -12,11 +12,11 @@ document.querySelector("form").addEventListener("submit", async (e) => {
             body: JSON.stringify({ email, motDePasse })
         });
 
-        alert("Connexion réussie !");
+        // Enregistrement dans le stockage local
         localStorage.setItem("token", result.token);
-        localStorage.setItem("utilisateurId", result.utilisateur.id);
         localStorage.setItem("utilisateur", JSON.stringify(result.utilisateur));
 
+        alert("Connexion réussie !");
         window.location.href = "dashboard.html";
     } catch (err) {
         alert(err.message || "Erreur réseau.");
