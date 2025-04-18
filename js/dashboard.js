@@ -25,6 +25,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             notes = await apiFetch("notes", {
                 headers: { Authorization: `Bearer ${token}` }
             });
+
+            // ✅ Si aucune note, on appelle l'init
+            if (!Array.isArray(notes) || notes.length === 0) {
+                const init = await apiFetch("notes/init", {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                // Recharge les notes après init
+                notes = await apiFetch("notes", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+            }
+
         } catch (err) {
             console.error(err);
             alert("Erreur serveur.");
