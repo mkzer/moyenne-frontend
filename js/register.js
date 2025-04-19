@@ -1,5 +1,3 @@
-// js/register.js
-
 document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -11,7 +9,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const messageEmail = document.getElementById("message-email");
 
     // Vérifie l'email
-    if (email.endsWith("@etu.univ-lorraine.fr")) {
+    if (email.endsWith("@etu.univ-lorraine.fr") || email.endsWith("@univ-lorraine.fr")) {
         messageEmail.textContent = "Veuillez utiliser un email personnel, pas un email universitaire.";
         messageEmail.classList.remove("hidden");
         return;
@@ -33,3 +31,21 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         alert(err.message || "Erreur réseau.");
     }
 });
+
+// 👁️ Afficher le mot de passe pendant le clic
+const passwordInput = document.getElementById("motDePasse");
+const toggleBtn = document.getElementById("togglePassword");
+
+if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener("mousedown", () => {
+        passwordInput.type = "text";
+    });
+
+    toggleBtn.addEventListener("mouseup", () => {
+        passwordInput.type = "password";
+    });
+
+    toggleBtn.addEventListener("mouseleave", () => {
+        passwordInput.type = "password";
+    });
+}
