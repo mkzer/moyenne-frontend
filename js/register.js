@@ -8,6 +8,16 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const email = document.querySelector("input[name='email']").value;
     const motDePasse = document.querySelector("input[name='motDePasse']").value;
     const parcours = document.querySelector("select[name='parcours']").value;
+    const messageEmail = document.getElementById("message-email");
+
+    // Vérifie l'email
+    if (email.endsWith("@univ-lorraine.fr")) {
+        messageEmail.textContent = "Veuillez utiliser un email personnel, pas un email universitaire.";
+        messageEmail.classList.remove("hidden");
+        return;
+    } else {
+        messageEmail.classList.add("hidden");
+    }
 
     const data = { prenom, nom, email, motDePasse, parcours };
 
@@ -17,7 +27,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
             body: JSON.stringify(data)
         });
 
-        alert("Inscription réussie !");
+        alert("Merci pour votre inscription !");
         window.location.href = "index.html";
     } catch (err) {
         alert(err.message || "Erreur réseau.");
