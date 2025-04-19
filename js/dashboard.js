@@ -26,19 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            // ✅ Si aucune note, on appelle l'init
             if (!Array.isArray(notes) || notes.length === 0) {
                 const init = await apiFetch("notes/init", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
-                // Recharge les notes après init
                 notes = await apiFetch("notes", {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }
-
         } catch (err) {
             console.error(err);
             alert("Erreur serveur.");
@@ -109,12 +106,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (total > 0) {
             const moyenne = pondérée / total;
+            let message = `${moyenne >= 10 && toutesUeValidees ? "✅ Année validée" : "❌ Année non validée"}`;
+
+            if (moyenne >= 10 && toutesUeValidees) {
+                if (moyenne >= 16) {
+                    message += " – Mention Très bien";
+                } else if (moyenne >= 14) {
+                    message += " – Mention Bien";
+                } else if (moyenne >= 12) {
+                    message += " – Mention Assez bien";
+                } else {
+                    message += " – Mention Passable";
+                }
+            }
+
             const encart = document.createElement("tr");
             encart.className = "bg-base-300 font-bold";
             encart.innerHTML = `
                 <td colspan="5" class="text-center">
-                    Moyenne générale : ${moyenne.toFixed(2)} – 
-                    ${moyenne >= 10 && toutesUeValidees ? "✅ Année validée" : "❌ Année non validée"}
+                    Moyenne générale : ${moyenne.toFixed(2)} – ${message}
                 </td>`;
             tableau.appendChild(encart);
         }
@@ -125,16 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const valeur = parseFloat(input.value);
                 if (isNaN(valeur) || valeur < 0 || valeur > 20) {
                     alert("La note doit être un nombre entre 0 et 20.");
-                    input.value = ""; // Réinitialise le champ si mauvaise saisie
+                    input.value = "";
                     return;
                 }
-
-                const payload = {
-                    code: input.dataset.code,
-                    nom: input.dataset.nom,
-                    coefficient: parseFloat(input.dataset.coef),
-                    note: valeur
-                };
 
                 try {
                     await apiFetch(`notes/${input.dataset.id}`, {
