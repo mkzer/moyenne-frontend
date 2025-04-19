@@ -123,7 +123,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelectorAll("input[data-code]").forEach(input => {
             input.addEventListener("change", async () => {
                 const valeur = parseFloat(input.value);
-                if (isNaN(valeur)) return alert("Note invalide");
+                if (isNaN(valeur) || valeur < 0 || valeur > 20) {
+                    alert("La note doit être un nombre entre 0 et 20.");
+                    input.value = ""; // Réinitialise le champ si mauvaise saisie
+                    return;
+                }
 
                 const payload = {
                     code: input.dataset.code,
