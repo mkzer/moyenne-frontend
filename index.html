@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connexion - Gestion Moyennes</title>
+  <title>Gestion de Moyennes - Connexion</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -11,29 +11,18 @@
     }
   </script>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
+<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6">
 
-<!-- 🔴 Mention site non officiel -->
-<div class="absolute top-2 text-center w-full">
-  <p class="text-red-500 text-xl font-bold">Site non officiel de l'Université de Lorraine</p>
-</div>
+<!-- 🧭 Titre principal -->
+<h1 class="text-3xl font-bold text-center mb-2">Gestion de Moyennes - Connexion</h1>
 
 <!-- Logo UL -->
-<div class="w-full flex justify-start p-4 absolute top-12 left-0">
+<div class="w-full flex justify-start p-2">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
-<!-- 📝 Descriptif du projet -->
-<div class="absolute top-28 w-full text-center text-sm text-gray-300">
-  <p class="mb-1">Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
-  <p>
-    👉 Code source disponible ici :
-    <a href="https://github.com/mkzer" target="_blank" class="link link-primary">https://github.com/mkzer</a>
-  </p>
-</div>
-
-<!-- Carte de connexion -->
-<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-48">
+<!-- 📄 Formulaire de connexion -->
+<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-4">
   <h2 class="text-center text-2xl font-bold mb-4">Connexion</h2>
 
   <form id="loginForm" class="space-y-4">
@@ -49,6 +38,17 @@
     Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a>
   </p>
 </div>
+
+<!-- 📝 Description + GitHub -->
+<div class="text-center mt-6 text-base-content text-sm">
+  <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
+  <p class="mt-1">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
+</div>
+
+<!-- 🚨 Mention site non officiel -->
+<footer class="mt-6 text-center text-red-500 font-semibold text-sm">
+  Site non officiel de l’Université de Lorraine
+</footer>
 
 <!-- ✅ Scripts -->
 <script src="js/utils.js"></script>
