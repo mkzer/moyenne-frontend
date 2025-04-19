@@ -8,7 +8,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const parcours = document.querySelector("select[name='parcours']").value;
     const messageEmail = document.getElementById("message-email");
 
-    // Vérifie l'email
+    // Vérifie l'email universitaire
     if (email.endsWith("@etu.univ-lorraine.fr") || email.endsWith("@univ-lorraine.fr")) {
         messageEmail.textContent = "Veuillez utiliser un email personnel, pas un email universitaire.";
         messageEmail.classList.remove("hidden");
@@ -20,15 +20,24 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const data = { prenom, nom, email, motDePasse, parcours };
 
     try {
-        const result = await apiFetch("utilisateurs/inscription", {
+        const response = await fetch("https://moyenne-backend.onrender.com/api/utilisateurs/inscription", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
+
+        const result = await response.json();
+
+        // 🔔 Affiche le message du backend, même si le status est 200
+        if (result.message && response.status !== 201) {
+            alert(result.message);
+            return;
+        }
 
         alert("Merci pour votre inscription !");
         window.location.href = "index.html";
     } catch (err) {
-        alert(err.message || "Erreur réseau.");
+        alert("Erreur réseau.");
     }
 });
 
