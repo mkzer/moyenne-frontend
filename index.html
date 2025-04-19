@@ -25,7 +25,10 @@
 
   <form id="loginForm" class="space-y-4">
     <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-    <input type="password" placeholder="Mot de passe" name="motDePasse" required class="input input-bordered w-full" />
+    <div class="relative">
+      <input type="password" placeholder="Mot de passe" name="motDePasse" required class="input input-bordered w-full pr-10" />
+      <button type="button" id="togglePassword" class="absolute right-2 top-2 btn btn-sm btn-ghost text-xs">👁️</button>
+    </div>
     <button type="submit" class="btn btn-primary w-full">Se connecter</button>
   </form>
 

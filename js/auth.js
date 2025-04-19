@@ -20,3 +20,21 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         alert(err.message || "Erreur réseau.");
     }
 });
+
+// 👁️ Gestion bouton "œil"
+const passwordInput = document.querySelector("input[name='motDePasse']");
+const toggleBtn = document.getElementById("togglePassword");
+
+if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener("mousedown", () => {
+        passwordInput.type = "text";
+    });
+
+    toggleBtn.addEventListener("mouseup", () => {
+        passwordInput.type = "password";
+    });
+
+    toggleBtn.addEventListener("mouseleave", () => {
+        passwordInput.type = "password";
+    });
+}
