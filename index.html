@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Connexion - Gestion Moyennes</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- ✅ DaisyUI fonctionne déjà via Tailwind Plugin intégré, pas besoin du script jsdelivr -->
   <script>
     tailwind.config = {
       plugins: [daisyui],
@@ -14,13 +13,27 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
 
+<!-- 🔴 Mention site non officiel -->
+<div class="absolute top-2 text-center w-full">
+  <p class="text-red-500 text-xl font-bold">Site non officiel de l'Université de Lorraine</p>
+</div>
+
 <!-- Logo UL -->
-<div class="w-full flex justify-start p-4 absolute top-0 left-0">
+<div class="w-full flex justify-start p-4 absolute top-12 left-0">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
+<!-- 📝 Descriptif du projet -->
+<div class="absolute top-28 w-full text-center text-sm text-gray-300">
+  <p class="mb-1">Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
+  <p>
+    👉 Code source disponible ici :
+    <a href="https://github.com/mkzer" target="_blank" class="link link-primary">https://github.com/mkzer</a>
+  </p>
+</div>
+
 <!-- Carte de connexion -->
-<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-20">
+<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-48">
   <h2 class="text-center text-2xl font-bold mb-4">Connexion</h2>
 
   <form id="loginForm" class="space-y-4">
@@ -37,7 +50,7 @@
   </p>
 </div>
 
-<!-- ✅ Scripts JS classiques, sans modules -->
+<!-- ✅ Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>
 </body>
