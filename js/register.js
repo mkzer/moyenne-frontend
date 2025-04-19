@@ -11,7 +11,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const messageEmail = document.getElementById("message-email");
 
     // Vérifie l'email
-    if (email.endsWith("@univ-lorraine.fr")) {
+    if (email.endsWith("@etu.univ-lorraine.fr")) {
         messageEmail.textContent = "Veuillez utiliser un email personnel, pas un email universitaire.";
         messageEmail.classList.remove("hidden");
         return;
