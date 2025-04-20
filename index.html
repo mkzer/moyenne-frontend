@@ -7,14 +7,22 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
       plugins: [daisyui],
     }
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6">
+<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
 <!-- 🧭 Titre principal -->
-<h1 class="text-3xl font-bold text-center mb-2">Gestion de Moyennes - Connexion</h1>
+<h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
 
 <!-- Logo UL -->
 <div class="w-full flex justify-start p-2">
@@ -22,16 +30,16 @@
 </div>
 
 <!-- 📄 Formulaire de connexion -->
-<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-4">
-  <h2 class="text-center text-2xl font-bold mb-4">Connexion</h2>
+<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl transition-all">
+  <h2 class="text-center text-2xl font-bold mb-6">Connexion</h2>
 
-  <form id="loginForm" class="space-y-4">
+  <form id="loginForm" class="space-y-5">
     <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
     <div class="relative">
-      <input type="password" placeholder="Mot de passe" name="motDePasse" required class="input input-bordered w-full pr-10" />
+      <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required class="input input-bordered w-full pr-10" />
       <button type="button" id="togglePassword" class="absolute right-2 top-2 btn btn-sm btn-ghost text-xs">👁️</button>
     </div>
-    <button type="submit" class="btn btn-primary w-full">Se connecter</button>
+    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">Se connecter</button>
   </form>
 
   <p class="text-center mt-4 text-sm">
@@ -40,9 +48,9 @@
 </div>
 
 <!-- 📝 Description + GitHub -->
-<div class="text-center mt-6 text-base-content text-sm">
+<div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
   <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
-  <p class="mt-1">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
+  <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
 </div>
 
 <!-- 🚨 Mention site non officiel -->
@@ -53,5 +61,21 @@
 <!-- ✅ Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>
+<script>
+  const inputPassword = document.getElementById("motDePasse");
+  const btnToggle = document.getElementById("togglePassword");
+
+  if (inputPassword && btnToggle) {
+    btnToggle.addEventListener("mousedown", () => {
+      inputPassword.type = "text";
+    });
+    btnToggle.addEventListener("mouseup", () => {
+      inputPassword.type = "password";
+    });
+    btnToggle.addEventListener("mouseleave", () => {
+      inputPassword.type = "password";
+    });
+  }
+</script>
 </body>
 </html>

@@ -3,53 +3,50 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Mes Notes - Gestion Moyennes</title>
+    <title>Tableau de bord - Gestion Moyennes</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-base-200">
+<body class="min-h-screen bg-base-200 text-base-content">
 
-<!-- Logo -->
-<div class="w-full flex justify-start p-4 absolute top-0 left-0">
-    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
-</div>
-
-<!-- Navbar -->
-<div class="flex justify-between items-center bg-base-100 shadow-md px-4 mt-16 py-3">
-    <span class="text-xl font-bold">Bienvenue, <span id="nom-utilisateur">Utilisateur</span></span>
-    <button id="logoutBtn" class="bg-red-600 text-white font-bold px-4 py-2 rounded hover:bg-red-700 transition">
+<!-- 🧭 Barre de navigation -->
+<header class="flex justify-between items-center bg-base-100 px-6 py-4 shadow">
+    <div class="text-xl font-bold">
+        Bienvenue, <span id="nom-utilisateur" class="text-primary">Utilisateur</span>
+    </div>
+    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">
         Déconnexion
     </button>
-</div>
+</header>
 
-<!-- Section principale -->
-<div class="container mx-auto p-4 space-y-6">
+<!-- 📄 Section principale -->
+<main class="container mx-auto px-4 py-8 space-y-8">
 
-    <h2 class="text-2xl font-semibold text-center">Mes notes</h2>
+    <h1 class="text-3xl font-bold text-center">📊 Tableau de notes</h1>
 
-    <!-- Formulaire pour ajout manuel -->
+    <!-- ➕ Formulaire d'ajout manuel -->
     <form id="noteForm" class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hidden">
         <input type="text" name="code" placeholder="Code EC (ex: 871.1)" class="input input-bordered" required />
         <input type="text" name="nom" placeholder="Nom de l'EC" class="input input-bordered" required />
         <input type="number" name="note" step="0.1" placeholder="Note" class="input input-bordered" required />
         <input type="number" name="coefficient" step="0.1" placeholder="Coefficient" class="input input-bordered" required />
-        <button type="submit" class="btn btn-primary col-span-full">Ajouter</button>
+        <button type="submit" class="btn btn-primary col-span-full">Ajouter la note</button>
     </form>
 
-    <!-- Tableau des notes -->
+    <!-- 📋 Tableau des notes -->
     <div class="overflow-x-auto">
-        <table class="table w-full mt-6">
+        <table class="table w-full">
             <thead>
-            <tr>
+            <tr class="bg-base-300 text-base-content">
                 <th>Code</th>
                 <th colspan="2">Nom</th>
                 <th>Note</th>
                 <th>Coef</th>
             </tr>
             </thead>
-            <tbody id="tableau-notes"></tbody>
+            <tbody id="tableau-notes" class="bg-base-100"></tbody>
         </table>
     </div>
-</div>
+</main>
 
 <!-- Scripts -->
 <script src="js/utils.js"></script>

@@ -3,33 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription - Gestion Moyennes</title>
+  <title>Inscription - Gestion de Moyennes</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
       plugins: [daisyui],
     }
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center bg-base-200">
+<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
+
+<!-- 🧭 Titre principal -->
+<h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
 
 <!-- Logo -->
-<div class="w-full flex justify-start p-4 absolute top-0 left-0">
+<div class="w-full flex justify-start px-4">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
-<!-- Carte d'inscription -->
-<div class="card w-full max-w-md shadow-xl bg-base-100 p-6 mt-20">
-  <h2 class="text-center text-2xl font-bold mb-4">Créer un compte</h2>
+<!-- Formulaire d'inscription -->
+<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
+  <h2 class="text-center text-2xl font-bold mb-6">Créer un compte</h2>
 
   <form id="registerForm" class="space-y-4">
     <input type="text" placeholder="Prénom" name="prenom" required class="input input-bordered w-full" />
     <input type="text" placeholder="Nom" name="nom" required class="input input-bordered w-full" />
 
     <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-    <p id="message-email" class="text-sm text-red-500 hidden">Veuillez saisir votre mail personnel s’il vous plaît.</p>
+    <p id="message-email" class="text-sm text-red-500 hidden">Veuillez utiliser un email personnel.</p>
 
-    <!-- Champ mot de passe avec bouton œil -->
+    <!-- Mot de passe + bouton œil -->
     <div class="relative">
       <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse"
              required class="input input-bordered w-full pr-12" />
@@ -47,7 +58,7 @@
       <option value="Autre">Autre</option>
     </select>
 
-    <button type="submit" class="btn btn-primary w-full">S’inscrire</button>
+    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">S’inscrire</button>
   </form>
 
   <p class="text-center mt-4 text-sm">
@@ -55,8 +66,35 @@
   </p>
 </div>
 
-<!-- ✅ Scripts classiques -->
+<!-- 📝 Description + GitHub -->
+<div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
+  <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
+  <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
+</div>
+
+<!-- 🚨 Mention site non officiel -->
+<footer class="mt-6 text-center text-red-500 font-semibold text-sm">
+  Site non officiel de l’Université de Lorraine
+</footer>
+
+<!-- ✅ Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/register.js"></script>
+<script>
+  const passwordInput = document.getElementById("motDePasse");
+  const toggleBtn = document.getElementById("togglePassword");
+
+  if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener("mousedown", () => {
+      passwordInput.type = "text";
+    });
+    toggleBtn.addEventListener("mouseup", () => {
+      passwordInput.type = "password";
+    });
+    toggleBtn.addEventListener("mouseleave", () => {
+      passwordInput.type = "password";
+    });
+  }
+</script>
 </body>
 </html>
