@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription - Gestion de Moyennes</title>
+  <title>Gestion de Moyennes - Inscription</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -20,6 +20,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
+
+<!-- 🌙 Switch Dark/Light -->
+<div class="absolute top-4 right-4">
+  <button id="themeToggle" class="btn btn-sm btn-outline">
+    <span id="themeIcon">🌙</span>
+  </button>
+</div>
 
 <!-- 🧭 Titre principal -->
 <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
@@ -81,20 +88,33 @@
 <script src="js/utils.js"></script>
 <script src="js/register.js"></script>
 <script>
+  // 👁️ Toggle visibilité mot de passe
   const passwordInput = document.getElementById("motDePasse");
   const toggleBtn = document.getElementById("togglePassword");
-
   if (toggleBtn && passwordInput) {
-    toggleBtn.addEventListener("mousedown", () => {
-      passwordInput.type = "text";
-    });
-    toggleBtn.addEventListener("mouseup", () => {
-      passwordInput.type = "password";
-    });
-    toggleBtn.addEventListener("mouseleave", () => {
-      passwordInput.type = "password";
-    });
+    toggleBtn.addEventListener("mousedown", () => passwordInput.type = "text");
+    toggleBtn.addEventListener("mouseup", () => passwordInput.type = "password");
+    toggleBtn.addEventListener("mouseleave", () => passwordInput.type = "password");
   }
+
+  // 🌙 Thème clair/sombre
+  const html = document.documentElement;
+  const btn = document.getElementById("themeToggle");
+  const icon = document.getElementById("themeIcon");
+
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
+    html.setAttribute("data-theme", "light");
+    icon.textContent = "☀️";
+  }
+
+  btn.addEventListener("click", () => {
+    const current = html.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", next);
+    icon.textContent = next === "dark" ? "🌙" : "☀️";
+    localStorage.setItem("theme", next);
+  });
 </script>
 </body>
 </html>

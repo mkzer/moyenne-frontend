@@ -21,6 +21,13 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
+<!-- 🌙 Switch Dark/Light -->
+<div class="absolute top-4 right-4">
+  <button id="themeToggle" class="btn btn-sm btn-outline">
+    <span id="themeIcon">🌙</span>
+  </button>
+</div>
+
 <!-- 🧭 Titre principal -->
 <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
 
@@ -62,20 +69,34 @@
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>
 <script>
+  // 👁️ Mot de passe toggle
   const inputPassword = document.getElementById("motDePasse");
   const btnToggle = document.getElementById("togglePassword");
-
   if (inputPassword && btnToggle) {
-    btnToggle.addEventListener("mousedown", () => {
-      inputPassword.type = "text";
-    });
-    btnToggle.addEventListener("mouseup", () => {
-      inputPassword.type = "password";
-    });
-    btnToggle.addEventListener("mouseleave", () => {
-      inputPassword.type = "password";
-    });
+    btnToggle.addEventListener("mousedown", () => inputPassword.type = "text");
+    btnToggle.addEventListener("mouseup", () => inputPassword.type = "password");
+    btnToggle.addEventListener("mouseleave", () => inputPassword.type = "password");
   }
+
+  // 🌙 Dark/Light switch
+  const toggle = document.getElementById("themeToggle");
+  const icon = document.getElementById("themeIcon");
+  const html = document.documentElement;
+
+  // Appliquer le thème sauvegardé
+  const saved = localStorage.getItem("theme");
+  if (saved === "light") {
+    html.setAttribute("data-theme", "light");
+    icon.textContent = "☀️";
+  }
+
+  toggle.addEventListener("click", () => {
+    const current = html.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", next);
+    icon.textContent = next === "dark" ? "🌙" : "☀️";
+    localStorage.setItem("theme", next);
+  });
 </script>
 </body>
 </html>

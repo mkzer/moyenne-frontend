@@ -5,17 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tableau de bord - Gestion Moyennes</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+            plugins: [daisyui],
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
-<body class="min-h-screen bg-base-200 text-base-content">
+<body class="min-h-screen bg-base-200 text-base-content font-sans">
 
 <!-- 🧭 Barre de navigation -->
 <header class="flex justify-between items-center bg-base-100 px-6 py-4 shadow">
     <div class="text-xl font-bold">
         Bienvenue, <span id="nom-utilisateur" class="text-primary">Utilisateur</span>
     </div>
-    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">
-        Déconnexion
-    </button>
+
+    <div class="flex items-center gap-4">
+        <!-- 🌙 Bouton dark/light -->
+        <button id="themeToggle" class="btn btn-sm btn-outline">
+            <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- 🚪 Déconnexion -->
+        <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">
+            Déconnexion
+        </button>
+    </div>
 </header>
 
 <!-- 📄 Section principale -->
@@ -51,5 +73,25 @@
 <!-- Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/dashboard.js"></script>
+<script>
+    // 🌙 Switch dark/light
+    const html = document.documentElement;
+    const btn = document.getElementById("themeToggle");
+    const icon = document.getElementById("themeIcon");
+
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+        html.setAttribute("data-theme", "light");
+        icon.textContent = "☀️";
+    }
+
+    btn.addEventListener("click", () => {
+        const current = html.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        html.setAttribute("data-theme", next);
+        icon.textContent = next === "dark" ? "🌙" : "☀️";
+        localStorage.setItem("theme", next);
+    });
+</script>
 </body>
 </html>
