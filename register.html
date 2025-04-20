@@ -9,9 +9,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ["Inter", "sans-serif"],
-          },
+          fontFamily: { sans: ["Inter", "sans-serif"] },
         },
       },
       plugins: [daisyui],
@@ -21,22 +19,24 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
-<!-- 🌙 Switch Dark/Light -->
+<!-- 🌗 Toggle clair/sombre -->
 <div class="absolute top-4 right-4">
-  <button id="themeToggle" class="btn btn-sm btn-outline">
-    <span id="themeIcon">🌙</span>
-  </button>
+  <label class="cursor-pointer flex items-center gap-2">
+    <span class="text-sm font-medium">🌞</span>
+    <input type="checkbox" id="themeToggle" class="toggle theme-controller" />
+    <span class="text-sm font-medium">🌙</span>
+  </label>
 </div>
 
 <!-- 🧭 Titre principal -->
 <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
 
-<!-- Logo -->
+<!-- Logo UL -->
 <div class="w-full flex justify-start px-4">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
-<!-- Formulaire d'inscription -->
+<!-- 📄 Formulaire d'inscription -->
 <div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
   <h2 class="text-center text-2xl font-bold mb-6">Créer un compte</h2>
 
@@ -47,14 +47,12 @@
     <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
     <p id="message-email" class="text-sm text-red-500 hidden">Veuillez utiliser un email personnel.</p>
 
-    <!-- Mot de passe + bouton œil -->
+    <!-- Champ mot de passe + bouton œil -->
     <div class="relative">
       <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse"
              required class="input input-bordered w-full pr-12" />
       <button type="button" id="togglePassword"
-              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
-        👁️
-      </button>
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">👁️</button>
     </div>
 
     <select name="parcours" class="select select-bordered w-full" required>
@@ -65,7 +63,9 @@
       <option value="Autre">Autre</option>
     </select>
 
-    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">S’inscrire</button>
+    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">
+      S’inscrire
+    </button>
   </form>
 
   <p class="text-center mt-4 text-sm">
@@ -88,32 +88,25 @@
 <script src="js/utils.js"></script>
 <script src="js/register.js"></script>
 <script>
-  // 👁️ Toggle visibilité mot de passe
+  // Mot de passe visibilité
   const passwordInput = document.getElementById("motDePasse");
   const toggleBtn = document.getElementById("togglePassword");
+
   if (toggleBtn && passwordInput) {
     toggleBtn.addEventListener("mousedown", () => passwordInput.type = "text");
     toggleBtn.addEventListener("mouseup", () => passwordInput.type = "password");
     toggleBtn.addEventListener("mouseleave", () => passwordInput.type = "password");
   }
 
-  // 🌙 Thème clair/sombre
-  const html = document.documentElement;
-  const btn = document.getElementById("themeToggle");
-  const icon = document.getElementById("themeIcon");
+  // 🌗 Thème clair/sombre
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle.checked = localStorage.getItem("theme") === "light";
+  document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
 
-  const saved = localStorage.getItem("theme");
-  if (saved === "light") {
-    html.setAttribute("data-theme", "light");
-    icon.textContent = "☀️";
-  }
-
-  btn.addEventListener("click", () => {
-    const current = html.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", next);
-    icon.textContent = next === "dark" ? "🌙" : "☀️";
-    localStorage.setItem("theme", next);
+  themeToggle.addEventListener("change", () => {
+    const theme = themeToggle.checked ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   });
 </script>
 </body>

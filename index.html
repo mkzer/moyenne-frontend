@@ -7,37 +7,37 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      plugins: [daisyui],
       theme: {
         extend: {
-          fontFamily: {
-            sans: ["Inter", "sans-serif"],
-          },
+          fontFamily: { sans: ["Inter", "sans-serif"] },
         },
       },
-      plugins: [daisyui],
-    }
+    };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
-<!-- 🌙 Switch Dark/Light -->
+<!-- 🌗 Toggle Dark/Light -->
 <div class="absolute top-4 right-4">
-  <button id="themeToggle" class="btn btn-sm btn-outline">
-    <span id="themeIcon">🌙</span>
-  </button>
+  <label class="cursor-pointer flex items-center gap-2">
+    <span class="text-sm font-medium">🌞</span>
+    <input type="checkbox" id="themeToggle" class="toggle theme-controller" />
+    <span class="text-sm font-medium">🌙</span>
+  </label>
 </div>
 
-<!-- 🧭 Titre principal -->
+<!-- Titre principal -->
 <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
 
-<!-- Logo UL -->
+<!-- Logo -->
 <div class="w-full flex justify-start p-2">
   <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
 </div>
 
-<!-- 📄 Formulaire de connexion -->
-<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl transition-all">
+<!-- Formulaire de connexion -->
+<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
   <h2 class="text-center text-2xl font-bold mb-6">Connexion</h2>
 
   <form id="loginForm" class="space-y-5">
@@ -54,48 +54,39 @@
   </p>
 </div>
 
-<!-- 📝 Description + GitHub -->
+<!-- Description -->
 <div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
   <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
   <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
 </div>
 
-<!-- 🚨 Mention site non officiel -->
+<!-- Mention -->
 <footer class="mt-6 text-center text-red-500 font-semibold text-sm">
   Site non officiel de l’Université de Lorraine
 </footer>
 
-<!-- ✅ Scripts -->
+<!-- Scripts -->
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>
 <script>
-  // 👁️ Mot de passe toggle
+  // Bouton œil
   const inputPassword = document.getElementById("motDePasse");
   const btnToggle = document.getElementById("togglePassword");
-  if (inputPassword && btnToggle) {
+  if (btnToggle && inputPassword) {
     btnToggle.addEventListener("mousedown", () => inputPassword.type = "text");
     btnToggle.addEventListener("mouseup", () => inputPassword.type = "password");
     btnToggle.addEventListener("mouseleave", () => inputPassword.type = "password");
   }
 
-  // 🌙 Dark/Light switch
-  const toggle = document.getElementById("themeToggle");
-  const icon = document.getElementById("themeIcon");
-  const html = document.documentElement;
+  // 🌗 Thème clair/sombre (toggle)
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle.checked = localStorage.getItem("theme") === "light";
+  document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
 
-  // Appliquer le thème sauvegardé
-  const saved = localStorage.getItem("theme");
-  if (saved === "light") {
-    html.setAttribute("data-theme", "light");
-    icon.textContent = "☀️";
-  }
-
-  toggle.addEventListener("click", () => {
-    const current = html.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    html.setAttribute("data-theme", next);
-    icon.textContent = next === "dark" ? "🌙" : "☀️";
-    localStorage.setItem("theme", next);
+  themeToggle.addEventListener("change", () => {
+    const theme = themeToggle.checked ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   });
 </script>
 </body>
