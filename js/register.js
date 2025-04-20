@@ -41,20 +41,19 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 });
 
-// 👁️ Afficher le mot de passe pendant le clic
+// 👁️ Fonction œil : affichage mot de passe (desktop + mobile)
 const passwordInput = document.getElementById("motDePasse");
 const toggleBtn = document.getElementById("togglePassword");
 
 if (toggleBtn && passwordInput) {
-    toggleBtn.addEventListener("mousedown", () => {
-        passwordInput.type = "text";
-    });
+    const afficher = () => passwordInput.type = "text";
+    const cacher = () => passwordInput.type = "password";
 
-    toggleBtn.addEventListener("mouseup", () => {
-        passwordInput.type = "password";
-    });
+    toggleBtn.addEventListener("mousedown", afficher);
+    toggleBtn.addEventListener("mouseup", cacher);
+    toggleBtn.addEventListener("mouseleave", cacher);
 
-    toggleBtn.addEventListener("mouseleave", () => {
-        passwordInput.type = "password";
-    });
+    // ✅ Support mobile
+    toggleBtn.addEventListener("touchstart", afficher);
+    toggleBtn.addEventListener("touchend", cacher);
 }

@@ -21,20 +21,19 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 });
 
-// 👁️ Gestion bouton "œil"
+// 👁️ Bouton œil visible sur desktop + mobile
 const passwordInput = document.querySelector("input[name='motDePasse']");
 const toggleBtn = document.getElementById("togglePassword");
 
 if (toggleBtn && passwordInput) {
-    toggleBtn.addEventListener("mousedown", () => {
-        passwordInput.type = "text";
-    });
+    const afficher = () => passwordInput.type = "text";
+    const cacher = () => passwordInput.type = "password";
 
-    toggleBtn.addEventListener("mouseup", () => {
-        passwordInput.type = "password";
-    });
+    toggleBtn.addEventListener("mousedown", afficher);
+    toggleBtn.addEventListener("mouseup", cacher);
+    toggleBtn.addEventListener("mouseleave", cacher);
 
-    toggleBtn.addEventListener("mouseleave", () => {
-        passwordInput.type = "password";
-    });
+    // ✅ Pour mobile
+    toggleBtn.addEventListener("touchstart", afficher);
+    toggleBtn.addEventListener("touchend", cacher);
 }
