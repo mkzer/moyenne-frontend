@@ -159,7 +159,40 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await chargerNotes();
 
-    if (form) form.style.display = parcours === "Autre" ? "grid" : "none";
+    if (form) {
+        form.style.display = parcours === "Autre" ? "grid" : "none";
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const code = form.elements["code"].value.trim();
+            const nom = form.elements["nom"].value.trim();
+            const note = parseFloat(form.elements["note"].value);
+            const coefficient = parseFloat(form.elements["coefficient"].value);
+
+            if (!code || !nom || isNaN(note) || note < 0 || note > 20 ||
+                isNaN(coefficient) || coefficient <= 0) {
+                alert("Veuillez remplir correctement le formulaire.");
+                return;
+            }
+
+            try {
+                await apiFetch("notes", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ code, nom, note, coefficient })
+                });
+
+                form.reset();
+                await chargerNotes();
+            } catch (err) {
+                alert("Erreur d'ajout de la note.");
+            }
+        });
+    }
 
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
