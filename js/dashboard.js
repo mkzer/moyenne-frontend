@@ -90,12 +90,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <td>${ec.code}</td>
                     <td colspan="2">${ec.nom}</td>
                     <td>
-                        <input type="number" min="0" max="20" step="0.1" 
+                        <input type="number" min="0" max="20" step="0.01"
                             data-id="${ec._id}"
                             data-code="${ec.code}"
                             data-nom="${ec.nom}"
                             data-coef="${ec.coefficient}"
-                            value="${ec.note}"
+                            value="${parseFloat(ec.note).toFixed(2)}"
                             class="input input-bordered input-sm w-full"/>
                     </td>
                     <td>${ec.coefficient}</td>
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`
                         },
-                        body: JSON.stringify({ note: valeur })
+                        body: JSON.stringify({ note: Math.round(valeur * 100) / 100 })
                     });
 
                     await chargerNotes();
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
                     },
-                    body: JSON.stringify({ code, nom, note, coefficient })
+                    body: JSON.stringify({ code, nom, note: Math.round(note * 100) / 100, coefficient })
                 });
 
                 form.reset();
