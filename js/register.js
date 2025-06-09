@@ -4,9 +4,17 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const prenom = document.querySelector("input[name='prenom']").value;
     const nom = document.querySelector("input[name='nom']").value;
     const email = document.querySelector("input[name='email']").value;
+    const emailRegex = /^[\w.-]+@[\w.-]+\.[A-Za-z]{2,}$/;
     const motDePasse = document.querySelector("input[name='motDePasse']").value;
     const parcours = document.querySelector("select[name='parcours']").value;
     const messageEmail = document.getElementById("message-email");
+
+    // Validation du format de l'email
+    if (!emailRegex.test(email)) {
+        messageEmail.textContent = "Adresse email invalide.";
+        messageEmail.classList.remove("hidden");
+        return;
+    }
 
     // Vérifie l'email universitaire
     if (email.endsWith("@etu.univ-lorraine.fr") || email.endsWith("@univ-lorraine.fr")) {

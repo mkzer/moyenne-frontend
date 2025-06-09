@@ -25,6 +25,7 @@
         Bienvenue, <span id="nom-utilisateur" class="text-primary">Utilisateur</span>
     </div>
     <div class="flex items-center gap-4">
+        <a href="profile.html" class="btn btn-ghost">Profil</a>
         <!-- Switch clair/sombre -->
         <label class="cursor-pointer flex items-center gap-2">
             <span class="text-sm">🌞</span>
@@ -48,7 +49,7 @@
     <form id="noteForm" class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hidden">
         <input type="text" name="code" placeholder="Code EC (ex: 871.1)" class="input input-bordered" required />
         <input type="text" name="nom" placeholder="Nom de l'EC" class="input input-bordered" required />
-        <input type="number" name="note" step="0.1" placeholder="Note" class="input input-bordered" required />
+        <input type="number" name="note" step="0.01" placeholder="Note" class="input input-bordered" required />
         <input type="number" name="coefficient" step="0.1" placeholder="Coefficient" class="input input-bordered" required />
         <button type="submit" class="btn btn-primary col-span-full">Ajouter la note</button>
     </form>
