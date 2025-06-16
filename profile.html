@@ -86,7 +86,7 @@
       padding: 1.5rem;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .card h2 {
@@ -104,10 +104,9 @@
       font-weight: 600;
     }
 
-    .delete-btn {
+    .btn {
       width: 100%;
       padding: 0.75rem;
-      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -115,6 +114,19 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .btn-warning {
+      background: #f9a825;
+    }
+
+    .btn-warning:hover {
+      background: #f57f17;
+    }
+
+    .delete-btn {
+      background: var(--accent);
     }
 
     .delete-btn:hover {
@@ -151,7 +163,15 @@
       <p><span class="label">Moyenne :</span> <span id="info-moyenne"></span></p>
     </div>
 
-    <button class="delete-btn" id="deleteAccount">Supprimer mon compte</button>
+    <!-- Bouton Réinitialiser le mot de passe -->
+    <button class="btn btn-warning" id="resetPasswordBtn">
+      Réinitialiser mon mot de passe
+    </button>
+
+    <!-- Bouton Supprimer le compte -->
+    <button class="btn delete-btn" id="deleteAccount">
+      Supprimer mon compte
+    </button>
   </main>
 
   <footer>
@@ -160,6 +180,52 @@
 
   <script src="js/utils.js"></script>
   <script src="js/profile.js"></script>
+  <script>
+    // Déconnexion
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Réinit mot de passe depuis Profil
+    document.getElementById("resetPasswordBtn").addEventListener("click", async () => {
+      const user = JSON.parse(localStorage.getItem("utilisateur") || "{}");
+      if (!user.email) {
+        alert("Utilisateur non connecté.");
+        return;
+      }
+      try {
+        await apiFetch("utilisateurs/reset-password-request", {
+          method: "POST",
+          body: JSON.stringify({ email: user.email })
+        });
+        alert("Un e-mail de réinitialisation a été envoyé à " + user.email);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // Suppression de compte avec confirmation
+    document.getElementById("deleteAccount").addEventListener("click", async () => {
+      const nom = JSON.parse(localStorage.getItem("utilisateur") || "{}").nom;
+      const saisie = prompt(`Tapez votre nom (« ${nom} ») pour confirmer la suppression :`);
+      if (saisie === nom) {
+        try {
+          await apiFetch("utilisateurs/me", {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+          alert("Compte supprimé.");
+          localStorage.clear();
+          window.location.href = "index.html";
+        } catch {
+          alert("Erreur lors de la suppression.");
+        }
+      } else {
+        alert("Nom incorrect, suppression annulée.");
+      }
+    });
+  </script>
 </body>
 
 </html>
