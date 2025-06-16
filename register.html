@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Gestion de Moyennes – Inscription</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #1e88e5;
-      --accent: #f57c00;
-      --bg: #f5f7fa;
-      --fg: #333;
-      --code-bg: rgba(0, 0, 0, 0.6);
-      --border: #ccc;
+      --primary: #90caf9;
+      --fg: #f1f1f1;
+      --bg: #2e2e2e;
+      --panel: #3c3c3c;
+      --border: #555;
+      --accent: #ef5350;
     }
 
     *,
@@ -37,49 +36,18 @@
     }
 
     .wrapper {
-      position: relative;
-      max-width: 400px;
-      width: 100%;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    }
-
-    /* fond code en arrière-plan */
-    .wrapper::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background:
-        var(--code-bg) url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Ctext%20x='0'%20y='15'%20fill='%23eee'%20font-family='monospace'%20font-size='12'%3E%26lt%3Binput%20type%3D'email'%20name%3D'email'%20required%26gt%3B%3C/text%3E%3C/svg%3E") center/contain no-repeat;
-      opacity: 0.15;
-      z-index: 0;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
+      background: var(--panel);
       padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
     }
 
-    .theme-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .theme-toggle input {
-      width: 1.2em;
-      height: 1.2em;
-      cursor: pointer;
+    .logo {
+      display: block;
+      margin: 0 auto 2rem;
+      height: 50px;
     }
 
     h1 {
@@ -88,12 +56,6 @@
       color: var(--primary);
       font-size: 1.75rem;
       font-weight: 600;
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto 1.5rem;
-      height: 50px;
     }
 
     form {
@@ -111,10 +73,11 @@
     select {
       width: 100%;
       padding: 0.75rem;
-      font-size: 1rem;
       border: 1px solid var(--border);
       border-radius: 4px;
-      background: #fff;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 1rem;
     }
 
     .input-group {
@@ -128,9 +91,9 @@
       transform: translateY(-50%);
       background: none;
       border: none;
-      font-size: 1.1rem;
+      color: var(--fg);
       cursor: pointer;
-      color: var(--border);
+      font-size: 1.1rem;
     }
 
     button.submit {
@@ -140,14 +103,13 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
 
     button.submit:hover {
-      background: #e65100;
+      background: #c62828;
     }
 
     .links {
@@ -165,104 +127,60 @@
       text-decoration: underline;
     }
 
-    p.error {
-      font-size: 0.85rem;
-      color: #d32f2f;
-      margin-top: -0.5rem;
-      font-style: italic;
-    }
-
     footer {
+      margin-top: 2rem;
       text-align: center;
-      margin: 1.5rem 0 0;
       font-size: 0.8rem;
-      color: #d32f2f;
-      font-weight: 600;
-    }
-
-    [data-theme="dark"] body {
-      background: #2e2e2e;
-      color: #f1f1f1;
-    }
-
-    [data-theme="dark"] .wrapper {
-      background: #3c3c3c;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    [data-theme="dark"] input,
-    [data-theme="dark"] select {
-      background: #555;
-      border: 1px solid #777;
-      color: #eee;
-    }
-
-    [data-theme="dark"] .links a {
-      color: #90caf9;
-    }
-
-    [data-theme="dark"] button.submit {
-      background: #fb8c00;
-    }
-
-    [data-theme="dark"] button.submit:hover {
-      background: #ef6c00;
+      color: var(--accent);
     }
   </style>
 </head>
 
-<body data-theme="dark">
+<body>
 
   <div class="wrapper">
-    <div class="content">
-      <div class="theme-toggle">
-        🌞 <input type="checkbox" id="themeToggle"> 🌙
+    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="logo">
+    <h1>Inscription</h1>
+
+    <form id="registerForm">
+      <label for="prenom">Prénom</label>
+      <input id="prenom" name="prenom" type="text" placeholder="Ton prénom" required>
+
+      <label for="nom">Nom</label>
+      <input id="nom" name="nom" type="text" placeholder="Ton nom" required>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="exemple@gmail.com" required>
+      <p id="message-email" style="font-size:0.85rem;color:#ef5350;display:none;">Veuillez utiliser un email personnel.
+      </p>
+
+      <label for="motDePasse">Mot de passe</label>
+      <div class="input-group">
+        <input id="motDePasse" name="motDePasse" type="password" placeholder="••••••••" required>
+        <button type="button" id="togglePassword">👁️</button>
       </div>
 
-      <h1>Inscription</h1>
-      <img src="assets/logo-ul.png" alt="UL Logo" class="logo">
+      <label for="parcours">Parcours</label>
+      <select id="parcours" name="parcours" required>
+        <option value="" disabled selected>Choisissez votre parcours</option>
+        <option value="M1 EEA MTI">M1 EEA MTI</option>
+        <option value="M1 EEA ISHM">M1 EEA ISHM</option>
+        <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
+        <option value="Autre">Autre</option>
+      </select>
 
-      <!-- Formulaire d'inscription -->
-      <form id="registerForm">
-        <label for="prenom">Prénom</label>
-        <input id="prenom" name="prenom" type="text" required placeholder="Ton prénom">
+      <button class="submit" type="submit">S’inscrire</button>
+    </form>
 
-        <label for="nom">Nom</label>
-        <input id="nom" name="nom" type="text" required placeholder="Ton nom">
-
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required placeholder="exemple@gmail.com">
-        <p id="message-email" class="error" style="display:none;">Veuillez utiliser un email personnel.</p>
-
-        <label for="motDePasse">Mot de passe</label>
-        <div class="input-group">
-          <input id="motDePasse" name="motDePasse" type="password" required placeholder="••••••••">
-          <button type="button" id="togglePassword">👁️</button>
-        </div>
-
-        <label for="parcours">Parcours</label>
-        <select id="parcours" name="parcours" required>
-          <option value="" disabled selected>Choisissez votre parcours</option>
-          <option value="M1 EEA MTI">M1 EEA MTI</option>
-          <option value="M1 EEA ISHM">M1 EEA ISHM</option>
-          <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
-          <option value="Autre">Autre</option>
-        </select>
-
-        <button class="submit" type="submit">S’inscrire</button>
-      </form>
-
-      <div class="links">
-        Déjà inscrit ? <a href="index.html">Connexion</a>
-      </div>
-
-      <footer>
-        Site non officiel de l’Université de Lorraine
-      </footer>
+    <div class="links">
+      Déjà inscrit ? <a href="index.html">Connexion</a>
     </div>
+
+    <footer>
+      Site non officiel de l’Université de Lorraine
+    </footer>
   </div>
 
-  <!-- Scripts -->
   <script src="js/utils.js"></script>
   <script src="js/register.js"></script>
   <script>
@@ -274,17 +192,6 @@
     btn.addEventListener("mouseleave", () => pwd.type = "password");
     btn.addEventListener("touchstart", () => pwd.type = "text");
     btn.addEventListener("touchend", () => pwd.type = "password");
-
-    // Toggle clair/sombre
-    const themeToggle = document.getElementById("themeToggle");
-    const root = document.documentElement;
-    themeToggle.checked = localStorage.getItem("theme") === "light";
-    root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
-    themeToggle.addEventListener("change", () => {
-      const t = themeToggle.checked ? "light" : "dark";
-      root.setAttribute("data-theme", t);
-      localStorage.setItem("theme", t);
-    });
   </script>
 
 </body>

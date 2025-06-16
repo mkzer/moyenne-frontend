@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -9,18 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1e88e5;
-            --accent: #f57c00;
-            --bg: #f5f7fa;
-            --fg: #333;
-            --code-bg: rgba(0, 0, 0, 0.6);
-            --border: #ccc;
+            --primary: #90caf9;
+            --fg: #f1f1f1;
+            --bg: #2e2e2e;
+            --panel: #3c3c3c;
+            --border: #555;
+            --accent: #ef5350;
             --green: #c8e6c9;
             --yellow: #fff9c4;
             --red: #ffcdd2;
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -30,88 +32,70 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--fg);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--panel);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .nav a.active {
+            text-decoration: underline;
+        }
+
+        .logout {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .logout:hover {
+            background: #c62828;
         }
 
         .wrapper {
-            position: relative;
             flex: 1;
-            padding: 1rem;
+            padding: 2rem;
             max-width: 1000px;
+            width: 100%;
             margin: 0 auto;
-        }
-
-        /*  ─── fond code en arrière-plan ───────────────────────────────────── */
-        .wrapper::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                var(--code-bg) url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Ctext%20x='0'%20y='15'%20fill='%23eee'%20font-family='monospace'%20font-size='12'%3E%26lt%3Brouter.get(%27/api/notes%27)%3B%26gt%3B%3C/text%3E%3C/svg%3E") center / contain no-repeat;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        /* ─── en-tête ───────────────────────────────────────────────────────── */
-        header {
-            position: relative;
-            background: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-
-        header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .theme-toggle input {
-            width: 1.2em;
-            height: 1.2em;
-        }
-
-        /* ─── contenu principal ─────────────────────────────────────────────── */
-        main {
-            position: relative;
-            flex: 1;
-            padding: 1rem;
-            z-index: 1;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            color: var(--primary);
         }
 
-        /* ─── formulaire d'ajout ───────────────────────────────────────────── */
+        /* Formulaire d'ajout */
         #noteForm {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -126,27 +110,22 @@
             font-size: 1rem;
             border: 1px solid var(--border);
             border-radius: 4px;
+            background: var(--panel);
+            color: var(--fg);
         }
 
         #noteForm button {
             background: var(--accent);
-            color: white;
             border: none;
+            color: #fff;
             cursor: pointer;
             transition: background 0.2s;
         }
 
         #noteForm button:hover {
-            background: #e65100;
+            background: #c62828;
         }
 
-        @media(max-width:720px) {
-            #noteForm {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ─── tableau ──────────────────────────────────────────────────────── */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -156,11 +135,15 @@
         td {
             padding: 0.75rem;
             border: 1px solid var(--border);
-            text-align: left;
         }
 
         th {
-            background: #efefef;
+            background: var(--panel);
+            color: var(--primary);
+        }
+
+        tr.ue {
+            font-weight: 600;
         }
 
         tr.ue.green {
@@ -176,117 +159,71 @@
         }
 
         tr.footer {
-            background: #ddd;
+            background: var(--panel);
+            color: var(--primary);
             font-weight: 600;
         }
 
-        /* ─── pied de page ─────────────────────────────────────────────────── */
         footer {
             text-align: center;
             padding: 1rem;
-            font-size: 0.8rem;
-            color: #d32f2f;
-            font-weight: 600;
-        }
-
-        /* ─── mode sombre ──────────────────────────────────────────────────── */
-        [data-theme="dark"] body {
-            background: #2e2e2e;
-            color: #f1f1f1;
-        }
-
-        [data-theme="dark"] header,
-        [data-theme="dark"] main {
-            background: #3c3c3c;
-            color: #f1f1f1;
-        }
-
-        [data-theme="dark"] th,
-        [data-theme="dark"] td {
-            border: 1px solid #555;
-        }
-
-        [data-theme="dark"] th {
-            background: #444;
-        }
-
-        [data-theme="dark"] #noteForm input,
-        [data-theme="dark"] #noteForm button {
-            background: #555;
-            color: #eee;
-            border: 1px solid #777;
-        }
-
-        [data-theme="dark"] #noteForm button:hover {
-            background: #ef6c00;
+            background: var(--panel);
+            color: var(--primary);
         }
     </style>
 </head>
 
-<body data-theme="dark">
+<body>
 
     <header>
-        <h2>Bienvenue, <span id="nom-utilisateur">Utilisateur</span></h2>
-        <div class="nav-right">
-            <div class="theme-toggle">
-                🌞 <input type="checkbox" id="themeToggle"> 🌙
-            </div>
-            <button id="logoutBtn">Déconnexion</button>
-        </div>
+        <nav class="nav">
+            <a href="dashboard.html" class="active">Tableau de notes</a>
+            <a href="profile.html">Profil</a>
+        </nav>
+        <button class="logout" id="logoutBtn">Déconnexion</button>
     </header>
 
     <div class="wrapper">
-        <main>
-            <h1>📊 Tableau de notes</h1>
+        <h1>📊 Tableau de notes</h1>
 
-            <!-- Formulaire d'ajout manuel -->
-            <form id="noteForm" class="hidden">
-                <input name="code" type="text" placeholder="Code EC (871.1)" required>
-                <input name="nom" type="text" placeholder="Nom de l'EC" required>
-                <input name="note" type="number" step="0.01" placeholder="Note" required>
-                <input name="coefficient" type="number" step="0.1" placeholder="Coef" required>
-                <button type="submit">Ajouter</button>
-            </form>
+        <form id="noteForm" class="hidden">
+            <input name="code" type="text" placeholder="Code EC (871.1)" required>
+            <input name="nom" type="text" placeholder="Nom de l'EC" required>
+            <input name="note" type="number" step="0.01" placeholder="Note" required>
+            <input name="coefficient" type="number" step="0.1" placeholder="Coef" required>
+            <button type="submit">Ajouter</button>
+        </form>
 
-            <!-- Tableau des notes -->
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th colspan="2">Nom</th>
-                            <th>Note</th>
-                            <th>Coef</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableau-notes">
-                        <!-- rempli dynamiquement -->
-                    </tbody>
-                </table>
-            </div>
-        </main>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th colspan="2">Nom</th>
+                        <th>Note</th>
+                        <th>Coef</th>
+                    </tr>
+                </thead>
+                <tbody id="tableau-notes">
+                    <!-- généré dynamiquement -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <footer>
         Site non officiel de l’Université de Lorraine
     </footer>
 
-    <!-- Scripts -->
     <script src="js/utils.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
-        // Toggle clair/sombre
-        const themeToggle = document.getElementById("themeToggle");
-        const root = document.documentElement;
-        themeToggle.checked = localStorage.getItem("theme") === "light";
-        root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
-        themeToggle.addEventListener("change", () => {
-            const t = themeToggle.checked ? "light" : "dark";
-            root.setAttribute("data-theme", t);
-            localStorage.setItem("theme", t);
+        // Déconnexion
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.clear();
+            window.location.href = "index.html";
         });
     </script>
-
 </body>
 
 </html>

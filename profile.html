@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Profil – Gestion Moyennes</title>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary: #1e88e5;
-      --accent: #f57c00;
-      --bg: #f5f7fa;
-      --fg: #333;
-      --border: #ccc;
-      --error: #d32f2f;
+      --primary: #90caf9;
+      --fg: #f1f1f1;
+      --bg: #2e2e2e;
+      --panel: #3c3c3c;
+      --border: #555;
+      --accent: #ef5350;
     }
 
     *,
@@ -29,30 +29,52 @@
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--fg);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      min-height: 100vh;
     }
 
     header {
-      background: #fff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 1rem;
+      background: var(--panel);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     }
 
-    header h1 {
-      font-size: 1.25rem;
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav a {
       color: var(--primary);
+      text-decoration: none;
       font-weight: 600;
     }
 
-    header a {
-      text-decoration: none;
-      color: var(--primary);
-      font-weight: 500;
+    .nav a.active {
+      text-decoration: underline;
+    }
+
+    .nav a:hover {
+      text-decoration: underline;
+    }
+
+    .logout {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .logout:hover {
+      background: #c62828;
     }
 
     main {
@@ -64,18 +86,17 @@
     }
 
     .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: var(--panel);
       padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       margin-bottom: 2rem;
     }
 
     .card h2 {
+      color: var(--primary);
       margin-bottom: 1rem;
       font-size: 1.5rem;
-      color: var(--primary);
-      font-weight: 600;
     }
 
     .card p {
@@ -87,10 +108,10 @@
       font-weight: 600;
     }
 
-    button.delete {
+    .delete-btn {
       width: 100%;
       padding: 0.75rem;
-      background: var(--error);
+      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -100,46 +121,22 @@
       transition: background 0.2s;
     }
 
-    button.delete:hover {
+    .delete-btn:hover {
       background: #c62828;
-    }
-
-    /* Dark mode */
-    [data-theme="dark"] body {
-      background: #2e2e2e;
-      color: #f1f1f1;
-    }
-
-    [data-theme="dark"] header {
-      background: #3c3c3c;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-    }
-
-    [data-theme="dark"] header h1,
-    [data-theme="dark"] header a {
-      color: #90caf9;
-    }
-
-    [data-theme="dark"] .card {
-      background: #3c3c3c;
-      color: #f1f1f1;
-    }
-
-    [data-theme="dark"] button.delete {
-      background: #ef5350;
-    }
-
-    [data-theme="dark"] button.delete:hover {
-      background: #e53935;
     }
   </style>
 </head>
 
-<body data-theme="dark">
+<body>
+
   <header>
-    <h1>Profil</h1>
-    <a href="dashboard.html">Tableau de bord</a>
+    <nav class="nav">
+      <a href="dashboard.html">Tableau de notes</a>
+      <a href="profile.html" class="active">Profil</a>
+    </nav>
+    <button class="logout" id="logoutBtn">Déconnexion</button>
   </header>
+
   <main>
     <div class="card">
       <h2>Informations</h2>
@@ -147,12 +144,48 @@
       <p><span class="label">Prénom :</span> <span id="info-prenom"></span></p>
       <p><span class="label">Email :</span> <span id="info-email"></span></p>
       <p><span class="label">Parcours :</span> <span id="info-parcours"></span></p>
+      <p><span class="label">Moyenne :</span> <span id="info-moyenne"></span></p>
     </div>
-    <button class="delete" id="deleteAccount">Supprimer mon compte</button>
+
+    <button class="delete-btn" id="deleteAccount">Supprimer mon compte</button>
   </main>
+
+  <footer>
+    Site non officiel de l’Université de Lorraine
+  </footer>
 
   <script src="js/utils.js"></script>
   <script src="js/profile.js"></script>
+  <script>
+    // Déconnexion
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    // Suppression de compte avec confirmation
+    document.getElementById("deleteAccount").addEventListener("click", async () => {
+      const nom = localStorage.getItem("utilisateur")
+        ? JSON.parse(localStorage.getItem("utilisateur")).nom
+        : '';
+      const saisie = prompt(`Tapez votre nom (« ${nom} ») pour confirmer la suppression :`);
+      if (saisie === nom) {
+        try {
+          await apiFetch(`utilisateurs/me`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+          alert("Compte supprimé.");
+          localStorage.clear();
+          window.location.href = "index.html";
+        } catch {
+          alert("Erreur lors de la suppression.");
+        }
+      } else {
+        alert("Nom incorrect, suppression annulée.");
+      }
+    });
+  </script>
 </body>
 
 </html>

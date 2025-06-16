@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Gestion de Moyennes – Connexion</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #1e88e5;
-      --accent: #f57c00;
-      --bg: #f5f7fa;
-      --fg: #333;
-      --code-bg: rgba(0, 0, 0, 0.6);
-      --border: #ccc;
+      --primary: #90caf9;
+      --fg: #f1f1f1;
+      --bg: #2e2e2e;
+      --panel: #3c3c3c;
+      --border: #555;
+      --accent: #ef5350;
     }
 
     *,
@@ -37,53 +36,20 @@
     }
 
     .wrapper {
-      position: relative;
-      max-width: 400px;
-      width: 100%;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    }
-
-    /* ─── fond code en arrière-plan ───────────────────────────────────── */
-    .wrapper::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background:
-        var(--code-bg) url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Ctext%20x='0'%20y='15'%20fill='%23eee'%20font-family='monospace'%20font-size='12'%3E%26lt%3Binput%20type%3D%27email%27%20name%3D%27email%27%20required%26gt%3B%3C/text%3E%3C/svg%3E") center/contain no-repeat;
-      opacity: 0.15;
-      z-index: 0;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
+      background: var(--panel);
       padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
     }
 
-    /* ─── Toggle thème ─────────────────────────────────────────────────── */
-    .theme-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
+    .logo {
+      display: block;
+      margin: 0 auto 2rem;
+      height: 50px;
     }
 
-    .theme-toggle input {
-      width: 1.2em;
-      height: 1.2em;
-      cursor: pointer;
-    }
-
-    /* ─── Titre & logo ─────────────────────────────────────────────────── */
     h1 {
       text-align: center;
       margin-bottom: 1.5rem;
@@ -92,13 +58,6 @@
       font-weight: 600;
     }
 
-    .logo {
-      display: block;
-      margin: 0 auto 1.5rem;
-      height: 50px;
-    }
-
-    /* ─── Formulaire de connexion ──────────────────────────────────────── */
     form {
       display: flex;
       flex-direction: column;
@@ -113,9 +72,11 @@
     input {
       width: 100%;
       padding: 0.75rem;
-      font-size: 1rem;
       border: 1px solid var(--border);
       border-radius: 4px;
+      background: var(--bg);
+      color: var(--fg);
+      font-size: 1rem;
     }
 
     .input-group {
@@ -129,9 +90,9 @@
       transform: translateY(-50%);
       background: none;
       border: none;
-      font-size: 1.1rem;
+      color: var(--fg);
       cursor: pointer;
-      color: var(--border);
+      font-size: 1.1rem;
     }
 
     button.submit {
@@ -141,14 +102,13 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
     }
 
     button.submit:hover {
-      background: #e65100;
+      background: #c62828;
     }
 
     .links {
@@ -167,81 +127,42 @@
     }
 
     footer {
+      margin-top: 2rem;
       text-align: center;
-      margin: 1.5rem 0 0;
       font-size: 0.8rem;
-      color: #d32f2f;
-      font-weight: 600;
-    }
-
-    /* ─── Mode sombre ──────────────────────────────────────────────────── */
-    [data-theme="dark"] body {
-      background: #2e2e2e;
-      color: #f1f1f1;
-    }
-
-    [data-theme="dark"] .wrapper {
-      background: #3c3c3c;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    [data-theme="dark"] input {
-      background: #555;
-      border: 1px solid #777;
-      color: #eee;
-    }
-
-    [data-theme="dark"] .links a {
-      color: #90caf9;
-    }
-
-    [data-theme="dark"] button.submit {
-      background: #fb8c00;
-    }
-
-    [data-theme="dark"] button.submit:hover {
-      background: #ef6c00;
+      color: var(--accent);
     }
   </style>
 </head>
 
-<body data-theme="dark">
+<body>
 
   <div class="wrapper">
-    <div class="content">
-      <!-- Toggle thème -->
-      <div class="theme-toggle">
-        🌞 <input type="checkbox" id="themeToggle"> 🌙
+    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="logo">
+    <h1>Connexion</h1>
+
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="exemple@gmail.com" required>
+
+      <label for="motDePasse">Mot de passe</label>
+      <div class="input-group">
+        <input id="motDePasse" name="motDePasse" type="password" placeholder="••••••••" required>
+        <button type="button" id="togglePassword">👁️</button>
       </div>
 
-      <h1>Gestion de Moyennes</h1>
-      <img src="assets/logo-ul.png" alt="UL Logo" class="logo">
+      <button class="submit" type="submit">Se connecter</button>
+    </form>
 
-      <!-- Formulaire de connexion -->
-      <form id="loginForm">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" placeholder="exemple@gmail.com" required>
-
-        <label for="motDePasse">Mot de passe</label>
-        <div class="input-group">
-          <input id="motDePasse" name="motDePasse" type="password" placeholder="••••••••" required>
-          <button type="button" id="togglePassword">👁️</button>
-        </div>
-
-        <button class="submit" type="submit">Se connecter</button>
-      </form>
-
-      <div class="links">
-        Pas encore de compte ? <a href="register.html">Créer un compte</a>
-      </div>
-
-      <footer>
-        Site non officiel de l’Université de Lorraine
-      </footer>
+    <div class="links">
+      Pas encore de compte ? <a href="register.html">Créer un compte</a>
     </div>
+
+    <footer>
+      Site non officiel de l’Université de Lorraine
+    </footer>
   </div>
 
-  <!-- Scripts existants -->
   <script src="js/utils.js"></script>
   <script src="js/auth.js"></script>
   <script>
@@ -253,17 +174,6 @@
     btn.addEventListener("mouseleave", () => pwd.type = "password");
     btn.addEventListener("touchstart", () => pwd.type = "text");
     btn.addEventListener("touchend", () => pwd.type = "password");
-
-    // Toggle clair/sombre
-    const themeToggle = document.getElementById("themeToggle");
-    const root = document.documentElement;
-    themeToggle.checked = localStorage.getItem("theme") === "light";
-    root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
-    themeToggle.addEventListener("change", () => {
-      const t = themeToggle.checked ? "light" : "dark";
-      root.setAttribute("data-theme", t);
-      localStorage.setItem("theme", t);
-    });
   </script>
 
 </body>
