@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Mot de passe oublié – Gestion Moyennes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #2e2e2e;
+            color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .box {
+            background: #3c3c3c;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            color: #90caf9;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        input {
+            padding: 0.75rem;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background: #2e2e2e;
+            color: #f1f1f1;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 0.75rem;
+            background: #ef5350;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #c62828;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .links a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1>Mot de passe oublié</h1>
+        <form id="requestForm">
+            <input type="email" name="email" placeholder="Votre adresse e-mail" required />
+            <button type="submit">Envoyer le lien</button>
+        </form>
+        <div class="links">
+            <a href="index.html">← Retour à la connexion</a>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script>
+        document.getElementById('requestForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const email = e.target.email.value.trim();
+            try {
+                await apiFetch('utilisateurs/reset-password-request', {
+                    method: 'POST',
+                    body: JSON.stringify({ email })
+                });
+                alert('Si votre adresse existe, vous recevrez un e-mail sous peu.');
+            } catch (err) {
+                alert(err.message);
+            }
+        });
+    </script>
+</body>
+
+</html>
