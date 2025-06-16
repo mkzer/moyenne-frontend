@@ -1,6 +1,6 @@
 // js/utils.js
 
-// URL de votre API backend (Render, etc.)
+// URL de votre API backend
 const API_BASE_URL = "https://moyenne-backend.onrender.com/api";
 
 /**
