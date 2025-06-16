@@ -1,92 +1,292 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tableau de bord - Gestion Moyennes</title>
-    <!-- Tailwind + DaisyUI via CDN -->
-    <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: { fontFamily: { sans: ["Inter", "sans-serif"] } }
-            },
-            plugins: [daisyui],
-        };
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Tableau de bord – Gestion Moyennes</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e88e5;
+            --accent: #f57c00;
+            --bg: #f5f7fa;
+            --fg: #333;
+            --code-bg: rgba(0, 0, 0, 0.6);
+            --border: #ccc;
+            --green: #c8e6c9;
+            --yellow: #fff9c4;
+            --red: #ffcdd2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wrapper {
+            position: relative;
+            flex: 1;
+            padding: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /*  ─── fond code en arrière-plan ───────────────────────────────────── */
+        .wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                var(--code-bg) url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Ctext%20x='0'%20y='15'%20fill='%23eee'%20font-family='monospace'%20font-size='12'%3E%26lt%3Brouter.get(%27/api/notes%27)%3B%26gt%3B%3C/text%3E%3C/svg%3E") center / contain no-repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        /* ─── en-tête ───────────────────────────────────────────────────────── */
+        header {
+            position: relative;
+            background: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle input {
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        /* ─── contenu principal ─────────────────────────────────────────────── */
+        main {
+            position: relative;
+            flex: 1;
+            padding: 1rem;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* ─── formulaire d'ajout ───────────────────────────────────────────── */
+        #noteForm {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #noteForm.hidden {
+            display: none;
+        }
+
+        #noteForm input,
+        #noteForm button {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        #noteForm button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #noteForm button:hover {
+            background: #e65100;
+        }
+
+        @media(max-width:720px) {
+            #noteForm {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── tableau ──────────────────────────────────────────────────────── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            background: #efefef;
+        }
+
+        tr.ue.green {
+            background: var(--green);
+        }
+
+        tr.ue.yellow {
+            background: var(--yellow);
+        }
+
+        tr.ue.red {
+            background: var(--red);
+        }
+
+        tr.footer {
+            background: #ddd;
+            font-weight: 600;
+        }
+
+        /* ─── pied de page ─────────────────────────────────────────────────── */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        /* ─── mode sombre ──────────────────────────────────────────────────── */
+        [data-theme="dark"] body {
+            background: #2e2e2e;
+            color: #f1f1f1;
+        }
+
+        [data-theme="dark"] header,
+        [data-theme="dark"] main {
+            background: #3c3c3c;
+            color: #f1f1f1;
+        }
+
+        [data-theme="dark"] th,
+        [data-theme="dark"] td {
+            border: 1px solid #555;
+        }
+
+        [data-theme="dark"] th {
+            background: #444;
+        }
+
+        [data-theme="dark"] #noteForm input,
+        [data-theme="dark"] #noteForm button {
+            background: #555;
+            color: #eee;
+            border: 1px solid #777;
+        }
+
+        [data-theme="dark"] #noteForm button:hover {
+            background: #ef6c00;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen bg-base-200 text-base-content font-sans">
+<body data-theme="dark">
 
-    <!-- Barre de navigation -->
-    <header class="flex justify-between items-center bg-base-100 px-6 py-4 shadow">
-        <div class="text-xl font-bold">
-            Bienvenue, <span id="nom-utilisateur" class="text-primary">Utilisateur</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <!-- Profil désactivé -->
-            <!-- <a href="#" class="btn btn-ghost">Profil</a> -->
-
-            <!-- Switch clair/sombre -->
-            <label class="cursor-pointer flex items-center gap-2">
-                <span class="text-sm">🌞</span>
-                <input type="checkbox" id="themeToggle" class="toggle" />
-                <span class="text-sm">🌙</span>
-            </label>
-
-            <!-- Bouton déconnexion -->
-            <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-semibold">
-                Déconnexion
-            </button>
+    <header>
+        <h2>Bienvenue, <span id="nom-utilisateur">Utilisateur</span></h2>
+        <div class="nav-right">
+            <div class="theme-toggle">
+                🌞 <input type="checkbox" id="themeToggle"> 🌙
+            </div>
+            <button id="logoutBtn">Déconnexion</button>
         </div>
     </header>
 
-    <!-- Section principale -->
-    <main class="container mx-auto px-4 py-8 space-y-8">
-        <h1 class="text-3xl font-bold text-center">📊 Tableau de notes</h1>
+    <div class="wrapper">
+        <main>
+            <h1>📊 Tableau de notes</h1>
 
-        <!-- Formulaire d'ajout manuel (pour "Autre") -->
-        <form id="noteForm" class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hidden">
-            <input type="text" name="code" placeholder="Code EC (ex: 871.1)" class="input input-bordered" required />
-            <input type="text" name="nom" placeholder="Nom de l'EC" class="input input-bordered" required />
-            <input type="number" name="note" step="0.01" placeholder="Note" class="input input-bordered" required />
-            <input type="number" name="coefficient" step="0.1" placeholder="Coefficient" class="input input-bordered"
-                required />
-            <button type="submit" class="btn btn-primary col-span-full">Ajouter la note</button>
-        </form>
+            <!-- Formulaire d'ajout manuel -->
+            <form id="noteForm" class="hidden">
+                <input name="code" type="text" placeholder="Code EC (871.1)" required>
+                <input name="nom" type="text" placeholder="Nom de l'EC" required>
+                <input name="note" type="number" step="0.01" placeholder="Note" required>
+                <input name="coefficient" type="number" step="0.1" placeholder="Coef" required>
+                <button type="submit">Ajouter</button>
+            </form>
 
-        <!-- Tableau des notes -->
-        <div class="overflow-x-auto">
-            <table class="table w-full">
-                <thead>
-                    <tr class="bg-base-300 text-base-content">
-                        <th>Code</th>
-                        <th colspan="2">Nom</th>
-                        <th>Note</th>
-                        <th>Coef</th>
-                    </tr>
-                </thead>
-                <tbody id="tableau-notes" class="bg-base-100"></tbody>
-            </table>
-        </div>
-    </main>
+            <!-- Tableau des notes -->
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th colspan="2">Nom</th>
+                            <th>Note</th>
+                            <th>Coef</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableau-notes">
+                        <!-- rempli dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        Site non officiel de l’Université de Lorraine
+    </footer>
 
     <!-- Scripts -->
     <script src="js/utils.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
-        // Thème clair/sombre
+        // Toggle clair/sombre
         const themeToggle = document.getElementById("themeToggle");
+        const root = document.documentElement;
         themeToggle.checked = localStorage.getItem("theme") === "light";
-        document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
+        root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
         themeToggle.addEventListener("change", () => {
-            const theme = themeToggle.checked ? "light" : "dark";
-            document.documentElement.setAttribute("data-theme", theme);
-            localStorage.setItem("theme", theme);
+            const t = themeToggle.checked ? "light" : "dark";
+            root.setAttribute("data-theme", t);
+            localStorage.setItem("theme", t);
         });
     </script>
+
 </body>
 
 </html>

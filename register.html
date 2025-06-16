@@ -1,113 +1,292 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestion de Moyennes - Inscription</title>
-  <!-- Tailwind + DaisyUI via CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: { fontFamily: { sans: ["Inter", "sans-serif"] } }
-      },
-      plugins: [daisyui]
-    };
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Gestion de Moyennes – Inscription</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e88e5;
+      --accent: #f57c00;
+      --bg: #f5f7fa;
+      --fg: #333;
+      --code-bg: rgba(0, 0, 0, 0.6);
+      --border: #ccc;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .wrapper {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* fond code en arrière-plan */
+    .wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        var(--code-bg) url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Ctext%20x='0'%20y='15'%20fill='%23eee'%20font-family='monospace'%20font-size='12'%3E%26lt%3Binput%20type%3D'email'%20name%3D'email'%20required%26gt%3B%3C/text%3E%3C/svg%3E") center/contain no-repeat;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .theme-toggle input {
+      width: 1.2em;
+      height: 1.2em;
+      cursor: pointer;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 1.5rem;
+      height: 50px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .input-group {
+      position: relative;
+    }
+
+    .input-group button {
+      position: absolute;
+      top: 50%;
+      right: 0.5rem;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--border);
+    }
+
+    button.submit {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.submit:hover {
+      background: #e65100;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .links a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    p.error {
+      font-size: 0.85rem;
+      color: #d32f2f;
+      margin-top: -0.5rem;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      margin: 1.5rem 0 0;
+      font-size: 0.8rem;
+      color: #d32f2f;
+      font-weight: 600;
+    }
+
+    [data-theme="dark"] body {
+      background: #2e2e2e;
+      color: #f1f1f1;
+    }
+
+    [data-theme="dark"] .wrapper {
+      background: #3c3c3c;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-theme="dark"] input,
+    [data-theme="dark"] select {
+      background: #555;
+      border: 1px solid #777;
+      color: #eee;
+    }
+
+    [data-theme="dark"] .links a {
+      color: #90caf9;
+    }
+
+    [data-theme="dark"] button.submit {
+      background: #fb8c00;
+    }
+
+    [data-theme="dark"] button.submit:hover {
+      background: #ef6c00;
+    }
+  </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
+<body data-theme="dark">
 
-  <!-- Toggle clair/sombre -->
-  <div class="absolute top-4 right-4">
-    <label class="cursor-pointer flex items-center gap-2">
-      <span class="text-sm">🌞</span>
-      <input type="checkbox" id="themeToggle" class="toggle" />
-      <span class="text-sm">🌙</span>
-    </label>
-  </div>
-
-  <!-- Titre -->
-  <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
-
-  <!-- Logo -->
-  <div class="w-full flex justify-start px-4">
-    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
-  </div>
-
-  <!-- Formulaire d'inscription -->
-  <div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
-    <h2 class="text-center text-2xl font-bold mb-6">Créer un compte</h2>
-
-    <form id="registerForm" class="space-y-4">
-      <input type="text" placeholder="Prénom" name="prenom" required class="input input-bordered w-full" />
-      <input type="text" placeholder="Nom" name="nom" required class="input input-bordered w-full" />
-      <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-      <p id="message-email" class="text-sm text-red-500 hidden">Veuillez utiliser un email personnel.</p>
-
-      <div class="relative">
-        <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required
-          class="input input-bordered w-full pr-12" />
-        <button type="button" id="togglePassword"
-          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">👁️</button>
+  <div class="wrapper">
+    <div class="content">
+      <div class="theme-toggle">
+        🌞 <input type="checkbox" id="themeToggle"> 🌙
       </div>
 
-      <select name="parcours" class="select select-bordered w-full" required>
-        <option disabled selected>Choisissez votre parcours</option>
-        <option value="M1 EEA MTI">M1 EEA MTI</option>
-        <option value="M1 EEA ISHM">M1 EEA ISHM</option>
-        <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
-        <option value="Autre">Autre</option>
-      </select>
+      <h1>Inscription</h1>
+      <img src="assets/logo-ul.png" alt="UL Logo" class="logo">
 
-      <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">
-        S’inscrire
-      </button>
-    </form>
+      <!-- Formulaire d'inscription -->
+      <form id="registerForm">
+        <label for="prenom">Prénom</label>
+        <input id="prenom" name="prenom" type="text" required placeholder="Ton prénom">
 
-    <p class="text-center mt-4 text-sm">
-      Déjà inscrit ? <a href="index.html" class="link link-primary">Connexion</a>
-    </p>
+        <label for="nom">Nom</label>
+        <input id="nom" name="nom" type="text" required placeholder="Ton nom">
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required placeholder="exemple@gmail.com">
+        <p id="message-email" class="error" style="display:none;">Veuillez utiliser un email personnel.</p>
+
+        <label for="motDePasse">Mot de passe</label>
+        <div class="input-group">
+          <input id="motDePasse" name="motDePasse" type="password" required placeholder="••••••••">
+          <button type="button" id="togglePassword">👁️</button>
+        </div>
+
+        <label for="parcours">Parcours</label>
+        <select id="parcours" name="parcours" required>
+          <option value="" disabled selected>Choisissez votre parcours</option>
+          <option value="M1 EEA MTI">M1 EEA MTI</option>
+          <option value="M1 EEA ISHM">M1 EEA ISHM</option>
+          <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
+          <option value="Autre">Autre</option>
+        </select>
+
+        <button class="submit" type="submit">S’inscrire</button>
+      </form>
+
+      <div class="links">
+        Déjà inscrit ? <a href="index.html">Connexion</a>
+      </div>
+
+      <footer>
+        Site non officiel de l’Université de Lorraine
+      </footer>
+    </div>
   </div>
-
-  <!-- Description + GitHub -->
-  <div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
-    <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur
-      validation d'année.</p>
-    <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source
-        disponible : github.com/mkzer</a></p>
-  </div>
-
-  <!-- Mention -->
-  <footer class="mt-6 text-center text-red-500 font-semibold text-sm">
-    Site non officiel de l’Université de Lorraine
-  </footer>
 
   <!-- Scripts -->
   <script src="js/utils.js"></script>
   <script src="js/register.js"></script>
   <script>
-    // Mot de passe œil
-    const passwordInput = document.getElementById("motDePasse");
-    const toggleBtn = document.getElementById("togglePassword");
-    if (toggleBtn && passwordInput) {
-      toggleBtn.addEventListener("mousedown", () => passwordInput.type = "text");
-      toggleBtn.addEventListener("mouseup", () => passwordInput.type = "password");
-      toggleBtn.addEventListener("mouseleave", () => passwordInput.type = "password");
-    }
+    // Afficher / masquer mot de passe
+    const pwd = document.getElementById("motDePasse");
+    const btn = document.getElementById("togglePassword");
+    btn.addEventListener("mousedown", () => pwd.type = "text");
+    btn.addEventListener("mouseup", () => pwd.type = "password");
+    btn.addEventListener("mouseleave", () => pwd.type = "password");
+    btn.addEventListener("touchstart", () => pwd.type = "text");
+    btn.addEventListener("touchend", () => pwd.type = "password");
 
-    // Thème clair/sombre
+    // Toggle clair/sombre
     const themeToggle = document.getElementById("themeToggle");
+    const root = document.documentElement;
     themeToggle.checked = localStorage.getItem("theme") === "light";
-    document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
+    root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
     themeToggle.addEventListener("change", () => {
-      const theme = themeToggle.checked ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
+      const t = themeToggle.checked ? "light" : "dark";
+      root.setAttribute("data-theme", t);
+      localStorage.setItem("theme", t);
     });
   </script>
+
 </body>
 
 </html>
