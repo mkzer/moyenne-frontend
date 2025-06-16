@@ -1,10 +1,17 @@
+// js/utils.js
+// ════════════════════════════════════════════════════════════════════════════════
+
+// Remplace cette ligne :
+const API_BASE_URL = "/api";
+
+// Par ceci (avec l’URL complète de ton backend) :
 const API_BASE_URL = "https://moyenne-backend.onrender.com/api";
 
 /**
  * Effectue une requête API vers le backend.
- * @param {string} endpoint - Chemin de l'API après /api/ (ex: 'utilisateurs/connexion')
- * @param {Object} options - Options fetch (méthode, headers, body, etc.)
- * @returns {Promise<any|null>} - Réponse JSON de l'API ou null si pas de JSON à renvoyer.
+ * @param {string} endpoint - Chemin après /api/ (ex: 'utilisateurs/me')
+ * @param {Object} options - Options fetch
+ * @returns {Promise<any|null>} - JSON ou null si pas de JSON
  */
 async function apiFetch(endpoint, options = {}) {
     const url = `${API_BASE_URL}/${endpoint}`;
@@ -16,26 +23,23 @@ async function apiFetch(endpoint, options = {}) {
         ...options
     });
 
-    // Pour les statuts d’erreur, essaie de lire un message JSON sinon lève une erreur générique
     if (!res.ok) {
-        let message = `Erreur ${res.status}`;
+        let msg = `Erreur ${res.status}`;
         const ct = res.headers.get("content-type") || "";
         if (ct.includes("application/json")) {
             try {
-                const errData = await res.json();
-                message = errData.message || message;
+                const err = await res.json();
+                msg = err.message || msg;
             } catch { }
         }
-        throw new Error(message);
+        throw new Error(msg);
     }
 
-    // Si c’est du JSON, pars-le, sinon retourne null (ex: DELETE 204)
-    const contentType = res.headers.get("content-type") || "";
-    if (contentType.includes("application/json")) {
+    const ct = res.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
         return await res.json();
     }
     return null;
 }
 
-// Rend la fonction dispo globalement
 window.apiFetch = apiFetch;
