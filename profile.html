@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8" />
@@ -55,10 +55,6 @@
     }
 
     .nav a.active {
-      text-decoration: underline;
-    }
-
-    .nav a:hover {
       text-decoration: underline;
     }
 
@@ -124,6 +120,14 @@
     .delete-btn:hover {
       background: #c62828;
     }
+
+    footer {
+      background: var(--panel);
+      padding: 1rem;
+      text-align: center;
+      color: var(--primary);
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 
@@ -156,36 +160,6 @@
 
   <script src="js/utils.js"></script>
   <script src="js/profile.js"></script>
-  <script>
-    // Déconnexion
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "index.html";
-    });
-
-    // Suppression de compte avec confirmation
-    document.getElementById("deleteAccount").addEventListener("click", async () => {
-      const nom = localStorage.getItem("utilisateur")
-        ? JSON.parse(localStorage.getItem("utilisateur")).nom
-        : '';
-      const saisie = prompt(`Tapez votre nom (« ${nom} ») pour confirmer la suppression :`);
-      if (saisie === nom) {
-        try {
-          await apiFetch(`utilisateurs/me`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-          });
-          alert("Compte supprimé.");
-          localStorage.clear();
-          window.location.href = "index.html";
-        } catch {
-          alert("Erreur lors de la suppression.");
-        }
-      } else {
-        alert("Nom incorrect, suppression annulée.");
-      }
-    });
-  </script>
 </body>
 
 </html>
