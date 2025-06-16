@@ -1,99 +1,238 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestion de Moyennes - Connexion</title>
-  <!-- Tailwind + DaisyUI via CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: { fontFamily: { sans: ["Inter", "sans-serif"] } },
-      },
-      plugins: [daisyui],
-    };
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Gestion de Moyennes – Connexion</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e88e5;
+      --accent: #f57c00;
+      --bg: #f5f7fa;
+      --fg: #333;
+      --code-bg: rgba(0, 0, 0, 0.6);
+      --code-fg: #eee;
+      --border: #ccc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .wrapper {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* fond code en arrière-plan */
+    .wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--code-bg) url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">\
+<text x="0" y="15" fill="%23eee" font-family="monospace" font-size="12">\
+&lt;link rel=' stylesheet' href=' https: //cdn.tailwindcss.com'&gt;\
+          </text></svg>') center/contain no-repeat;
+ opacity:0.15; z-index:0;
+      }
+
+      .content {
+        position:relative; z-index:1;
+        padding:2rem;
+      }
+
+      /* Toggle thème */
+      .theme-toggle {
+        position:absolute; top:1rem; right:1rem;
+        display:flex; align-items:center; gap:0.5rem;
+        font-size:0.9rem;
+      }
+
+      .theme-toggle input {
+        width:1.2em; height:1.2em; cursor:pointer;
+      }
+
+      h1 {
+        text-align:center;
+        margin-bottom:1.5rem;
+        color: var(--primary);
+        font-size:1.75rem;
+        font-weight:600;
+      }
+
+      .logo {
+        display:block; margin:0 auto 1.5rem;
+        height:50px;
+      }
+
+      form {
+        display:flex; flex-direction:column; gap:1rem;
+      }
+
+      label {
+        font-size:0.9rem; font-weight:500;
+      }
+
+      input {
+        width:100%; padding:0.75rem; font-size:1rem;
+        border:1px solid var(--border); border-radius:4px;
+      }
+
+      .input-group {
+        position:relative;
+      }
+
+      .input-group button {
+        position:absolute; top:50%; right:0.5rem;
+        transform:translateY(-50%);
+        background:none; border:none; font-size:1.1rem;
+        cursor:pointer; color:var(--border);
+      }
+
+      button.submit {
+        margin-top:1.5rem; padding:0.75rem;
+        background: var(--accent); color:#fff;
+        border:none; border-radius:4px;
+        font-size:1rem; font-weight:600;
+        cursor:pointer; transition: background 0.2s;
+      }
+
+      button.submit:hover {
+        background: #e65100;
+      }
+
+      .links {
+        text-align:center; margin-top:1rem;
+        font-size:0.9rem;
+      }
+
+      .links a {
+        color: var(--primary); text-decoration:none;
+      }
+
+      .links a:hover {
+        text-decoration:underline;
+      }
+
+      footer {
+        text-align:center; margin:1.5rem 0 0;
+        font-size:0.8rem; color:#d32f2f;
+        font-weight:600;
+      }
+
+      /* Dark mode support */
+      [data-theme="dark"] body {
+        background: #2e2e2e; color:#f1f1f1;
+      }
+
+      [data-theme="dark"] .wrapper {
+        background: #3c3c3c; box-shadow:0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+
+      [data-theme="dark"] input {
+        background:#555; border:1px solid #777; color:#eee;
+      }
+
+      [data-theme="dark"] .links a {
+        color:#90caf9;
+      }
+
+      [data-theme="dark"] button.submit {
+        background:#fb8c00;
+      }
+
+      [data-theme="dark"] button.submit:hover {
+        background:#ef6c00;
+      }
+  </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
+<body data-theme="dark">
 
-  <!-- Toggle Dark/Light -->
-  <div class="absolute top-4 right-4">
-    <label class="cursor-pointer flex items-center gap-2">
-      <span class="text-sm font-medium">🌞</span>
-      <input type="checkbox" id="themeToggle" class="toggle" />
-      <span class="text-sm font-medium">🌙</span>
-    </label>
-  </div>
-
-  <!-- Titre -->
-  <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
-
-  <!-- Logo -->
-  <div class="w-full flex justify-start p-2">
-    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
-  </div>
-
-  <!-- Formulaire de connexion -->
-  <div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
-    <h2 class="text-center text-2xl font-bold mb-6">Connexion</h2>
-
-    <form id="loginForm" class="space-y-5">
-      <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-      <div class="relative">
-        <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required
-          class="input input-bordered w-full pr-10" />
-        <button type="button" id="togglePassword"
-          class="absolute right-2 top-2 btn btn-ghost btn-sm text-xs">👁️</button>
+  <div class="wrapper">
+    <div class="content">
+      <!-- Toggle thème -->
+      <div class="theme-toggle">
+        🌞 <input type="checkbox" id="themeToggle"> 🌙
       </div>
-      <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">Se
-        connecter</button>
-    </form>
 
-    <p class="text-center mt-4 text-sm">
-      Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a>
-    </p>
+      <h1>Gestion de Moyennes</h1>
+      <img src="assets/logo-ul.png" alt="UL Logo" class="logo">
+
+      <!-- Formulaire de connexion -->
+      <form id="loginForm">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="exemple@gmail.com" required>
+
+        <label for="motDePasse">Mot de passe</label>
+        <div class="input-group">
+          <input id="motDePasse" name="motDePasse" type="password" placeholder="••••••••" required>
+          <button type="button" id="togglePassword">👁️</button>
+        </div>
+
+        <button class="submit" type="submit">Se connecter</button>
+      </form>
+
+      <div class="links">
+        Pas encore de compte ? <a href="register.html">Créer un compte</a>
+      </div>
+
+      <footer>
+        Site non officiel de l’Université de Lorraine
+      </footer>
+    </div>
   </div>
 
-  <!-- Description + GitHub -->
-  <div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
-    <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur
-      validation d'année.</p>
-    <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source
-        disponible : github.com/mkzer</a></p>
-  </div>
-
-  <!-- Mention -->
-  <footer class="mt-6 text-center text-red-500 font-semibold text-sm">
-    Site non officiel de l’Université de Lorraine
-  </footer>
-
-  <!-- Scripts -->
+  <!-- Scripts existants -->
   <script src="js/utils.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    // Bouton œil
-    const inputPassword = document.getElementById("motDePasse");
-    const btnToggle = document.getElementById("togglePassword");
-    if (btnToggle && inputPassword) {
-      btnToggle.addEventListener("mousedown", () => inputPassword.type = "text");
-      btnToggle.addEventListener("mouseup", () => inputPassword.type = "password");
-      btnToggle.addEventListener("mouseleave", () => inputPassword.type = "password");
-    }
+    // Afficher / masquer mot de passe
+    const pwd = document.getElementById("motDePasse");
+    const btn = document.getElementById("togglePassword");
+    btn.addEventListener("mousedown", () => pwd.type = "text");
+    btn.addEventListener("mouseup", () => pwd.type = "password");
+    btn.addEventListener("mouseleave", () => pwd.type = "password");
+    btn.addEventListener("touchstart", () => pwd.type = "text");
+    btn.addEventListener("touchend", () => pwd.type = "password");
 
-    // Thème clair/sombre
+    // Toggle clair/sombre
     const themeToggle = document.getElementById("themeToggle");
+    const root = document.documentElement;
     themeToggle.checked = localStorage.getItem("theme") === "light";
-    document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
+    root.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
     themeToggle.addEventListener("change", () => {
-      const theme = themeToggle.checked ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
+      const t = themeToggle.checked ? "light" : "dark";
+      root.setAttribute("data-theme", t);
+      localStorage.setItem("theme", t);
     });
   </script>
+
 </body>
 
 </html>
