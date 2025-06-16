@@ -1,113 +1,113 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion de Moyennes - Inscription</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind + DaisyUI via CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
   <script>
     tailwind.config = {
       theme: {
-        extend: {
-          fontFamily: { sans: ["Inter", "sans-serif"] },
-        },
+        extend: { fontFamily: { sans: ["Inter", "sans-serif"] } }
       },
-      plugins: [daisyui],
-    }
+      plugins: [daisyui]
+    };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
+
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
-<!-- 🌗 Toggle clair/sombre -->
-<div class="absolute top-4 right-4">
-  <label class="cursor-pointer flex items-center gap-2">
-    <span class="text-sm font-medium">🌞</span>
-    <input type="checkbox" id="themeToggle" class="toggle theme-controller" />
-    <span class="text-sm font-medium">🌙</span>
-  </label>
-</div>
+  <!-- Toggle clair/sombre -->
+  <div class="absolute top-4 right-4">
+    <label class="cursor-pointer flex items-center gap-2">
+      <span class="text-sm">🌞</span>
+      <input type="checkbox" id="themeToggle" class="toggle" />
+      <span class="text-sm">🌙</span>
+    </label>
+  </div>
 
-<!-- 🧭 Titre principal -->
-<h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
+  <!-- Titre -->
+  <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Inscription</h1>
 
-<!-- Logo UL -->
-<div class="w-full flex justify-start px-4">
-  <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
-</div>
+  <!-- Logo -->
+  <div class="w-full flex justify-start px-4">
+    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
+  </div>
 
-<!-- 📄 Formulaire d'inscription -->
-<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
-  <h2 class="text-center text-2xl font-bold mb-6">Créer un compte</h2>
+  <!-- Formulaire d'inscription -->
+  <div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
+    <h2 class="text-center text-2xl font-bold mb-6">Créer un compte</h2>
 
-  <form id="registerForm" class="space-y-4">
-    <input type="text" placeholder="Prénom" name="prenom" required class="input input-bordered w-full" />
-    <input type="text" placeholder="Nom" name="nom" required class="input input-bordered w-full" />
+    <form id="registerForm" class="space-y-4">
+      <input type="text" placeholder="Prénom" name="prenom" required class="input input-bordered w-full" />
+      <input type="text" placeholder="Nom" name="nom" required class="input input-bordered w-full" />
+      <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
+      <p id="message-email" class="text-sm text-red-500 hidden">Veuillez utiliser un email personnel.</p>
 
-    <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-    <p id="message-email" class="text-sm text-red-500 hidden">Veuillez utiliser un email personnel.</p>
+      <div class="relative">
+        <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required
+          class="input input-bordered w-full pr-12" />
+        <button type="button" id="togglePassword"
+          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">👁️</button>
+      </div>
 
-    <!-- Champ mot de passe + bouton œil -->
-    <div class="relative">
-      <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse"
-             required class="input input-bordered w-full pr-12" />
-      <button type="button" id="togglePassword"
-              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">👁️</button>
-    </div>
+      <select name="parcours" class="select select-bordered w-full" required>
+        <option disabled selected>Choisissez votre parcours</option>
+        <option value="M1 EEA MTI">M1 EEA MTI</option>
+        <option value="M1 EEA ISHM">M1 EEA ISHM</option>
+        <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
+        <option value="Autre">Autre</option>
+      </select>
 
-    <select name="parcours" class="select select-bordered w-full" required>
-      <option disabled selected>Choisissez votre parcours</option>
-      <option value="M1 EEA MTI">M1 EEA MTI</option>
-      <option value="M1 EEA ISHM">M1 EEA ISHM</option>
-      <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
-      <option value="Autre">Autre</option>
-    </select>
+      <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">
+        S’inscrire
+      </button>
+    </form>
 
-    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">
-      S’inscrire
-    </button>
-  </form>
+    <p class="text-center mt-4 text-sm">
+      Déjà inscrit ? <a href="index.html" class="link link-primary">Connexion</a>
+    </p>
+  </div>
 
-  <p class="text-center mt-4 text-sm">
-    Déjà inscrit ? <a href="index.html" class="link link-primary">Connexion</a>
-  </p>
-</div>
+  <!-- Description + GitHub -->
+  <div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
+    <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur
+      validation d'année.</p>
+    <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source
+        disponible : github.com/mkzer</a></p>
+  </div>
 
-<!-- 📝 Description + GitHub -->
-<div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
-  <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
-  <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
-</div>
+  <!-- Mention -->
+  <footer class="mt-6 text-center text-red-500 font-semibold text-sm">
+    Site non officiel de l’Université de Lorraine
+  </footer>
 
-<!-- 🚨 Mention site non officiel -->
-<footer class="mt-6 text-center text-red-500 font-semibold text-sm">
-  Site non officiel de l’Université de Lorraine
-</footer>
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/register.js"></script>
+  <script>
+    // Mot de passe œil
+    const passwordInput = document.getElementById("motDePasse");
+    const toggleBtn = document.getElementById("togglePassword");
+    if (toggleBtn && passwordInput) {
+      toggleBtn.addEventListener("mousedown", () => passwordInput.type = "text");
+      toggleBtn.addEventListener("mouseup", () => passwordInput.type = "password");
+      toggleBtn.addEventListener("mouseleave", () => passwordInput.type = "password");
+    }
 
-<!-- ✅ Scripts -->
-<script src="js/utils.js"></script>
-<script src="js/register.js"></script>
-<script>
-  // Mot de passe visibilité
-  const passwordInput = document.getElementById("motDePasse");
-  const toggleBtn = document.getElementById("togglePassword");
-
-  if (toggleBtn && passwordInput) {
-    toggleBtn.addEventListener("mousedown", () => passwordInput.type = "text");
-    toggleBtn.addEventListener("mouseup", () => passwordInput.type = "password");
-    toggleBtn.addEventListener("mouseleave", () => passwordInput.type = "password");
-  }
-
-  // 🌗 Thème clair/sombre
-  const themeToggle = document.getElementById("themeToggle");
-  themeToggle.checked = localStorage.getItem("theme") === "light";
-  document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
-
-  themeToggle.addEventListener("change", () => {
-    const theme = themeToggle.checked ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  });
-</script>
+    // Thème clair/sombre
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.checked = localStorage.getItem("theme") === "light";
+    document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
+    themeToggle.addEventListener("change", () => {
+      const theme = themeToggle.checked ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    });
+  </script>
 </body>
+
 </html>

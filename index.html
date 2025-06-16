@@ -1,93 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gestion de Moyennes - Connexion</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind + DaisyUI via CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=daisyui"></script>
   <script>
     tailwind.config = {
-      plugins: [daisyui],
       theme: {
-        extend: {
-          fontFamily: { sans: ["Inter", "sans-serif"] },
-        },
+        extend: { fontFamily: { sans: ["Inter", "sans-serif"] } },
       },
+      plugins: [daisyui],
     };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 </head>
+
 <body class="min-h-screen flex flex-col items-center justify-between bg-base-200 pt-10 pb-6 font-sans">
 
-<!-- 🌗 Toggle Dark/Light -->
-<div class="absolute top-4 right-4">
-  <label class="cursor-pointer flex items-center gap-2">
-    <span class="text-sm font-medium">🌞</span>
-    <input type="checkbox" id="themeToggle" class="toggle theme-controller" />
-    <span class="text-sm font-medium">🌙</span>
-  </label>
-</div>
+  <!-- Toggle Dark/Light -->
+  <div class="absolute top-4 right-4">
+    <label class="cursor-pointer flex items-center gap-2">
+      <span class="text-sm font-medium">🌞</span>
+      <input type="checkbox" id="themeToggle" class="toggle" />
+      <span class="text-sm font-medium">🌙</span>
+    </label>
+  </div>
 
-<!-- Titre principal -->
-<h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
+  <!-- Titre -->
+  <h1 class="text-3xl font-bold text-center mb-4">Gestion de Moyennes - Connexion</h1>
 
-<!-- Logo -->
-<div class="w-full flex justify-start p-2">
-  <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
-</div>
+  <!-- Logo -->
+  <div class="w-full flex justify-start p-2">
+    <img src="assets/logo-ul.png" alt="Université de Lorraine" class="h-12" />
+  </div>
 
-<!-- Formulaire de connexion -->
-<div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
-  <h2 class="text-center text-2xl font-bold mb-6">Connexion</h2>
+  <!-- Formulaire de connexion -->
+  <div class="card w-full max-w-md shadow-lg bg-base-100 p-8 mt-4 rounded-xl">
+    <h2 class="text-center text-2xl font-bold mb-6">Connexion</h2>
 
-  <form id="loginForm" class="space-y-5">
-    <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
-    <div class="relative">
-      <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required class="input input-bordered w-full pr-10" />
-      <button type="button" id="togglePassword" class="absolute right-2 top-2 btn btn-sm btn-ghost text-xs">👁️</button>
-    </div>
-    <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">Se connecter</button>
-  </form>
+    <form id="loginForm" class="space-y-5">
+      <input type="email" placeholder="Email" name="email" required class="input input-bordered w-full" />
+      <div class="relative">
+        <input type="password" placeholder="Mot de passe" name="motDePasse" id="motDePasse" required
+          class="input input-bordered w-full pr-10" />
+        <button type="button" id="togglePassword"
+          class="absolute right-2 top-2 btn btn-ghost btn-sm text-xs">👁️</button>
+      </div>
+      <button type="submit" class="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold w-full">Se
+        connecter</button>
+    </form>
 
-  <p class="text-center mt-4 text-sm">
-    Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a>
-  </p>
-</div>
+    <p class="text-center mt-4 text-sm">
+      Pas encore de compte ? <a href="register.html" class="link link-primary">Créer un compte</a>
+    </p>
+  </div>
 
-<!-- Description -->
-<div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
-  <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur validation d'année.</p>
-  <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source disponible ici : github.com/mkzer</a></p>
-</div>
+  <!-- Description + GitHub -->
+  <div class="text-center mt-6 text-base-content text-sm max-w-md px-4">
+    <p>Ce site permet aux étudiants de suivre leurs notes par UE et EC, calculer leur moyenne, et visualiser leur
+      validation d'année.</p>
+    <p class="mt-2">👉 <a href="https://github.com/mkzer" target="_blank" class="link link-secondary">Code source
+        disponible : github.com/mkzer</a></p>
+  </div>
 
-<!-- Mention -->
-<footer class="mt-6 text-center text-red-500 font-semibold text-sm">
-  Site non officiel de l’Université de Lorraine
-</footer>
+  <!-- Mention -->
+  <footer class="mt-6 text-center text-red-500 font-semibold text-sm">
+    Site non officiel de l’Université de Lorraine
+  </footer>
 
-<!-- Scripts -->
-<script src="js/utils.js"></script>
-<script src="js/auth.js"></script>
-<script>
-  // Bouton œil
-  const inputPassword = document.getElementById("motDePasse");
-  const btnToggle = document.getElementById("togglePassword");
-  if (btnToggle && inputPassword) {
-    btnToggle.addEventListener("mousedown", () => inputPassword.type = "text");
-    btnToggle.addEventListener("mouseup", () => inputPassword.type = "password");
-    btnToggle.addEventListener("mouseleave", () => inputPassword.type = "password");
-  }
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Bouton œil
+    const inputPassword = document.getElementById("motDePasse");
+    const btnToggle = document.getElementById("togglePassword");
+    if (btnToggle && inputPassword) {
+      btnToggle.addEventListener("mousedown", () => inputPassword.type = "text");
+      btnToggle.addEventListener("mouseup", () => inputPassword.type = "password");
+      btnToggle.addEventListener("mouseleave", () => inputPassword.type = "password");
+    }
 
-  // 🌗 Thème clair/sombre (toggle)
-  const themeToggle = document.getElementById("themeToggle");
-  themeToggle.checked = localStorage.getItem("theme") === "light";
-  document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
-
-  themeToggle.addEventListener("change", () => {
-    const theme = themeToggle.checked ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  });
-</script>
+    // Thème clair/sombre
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.checked = localStorage.getItem("theme") === "light";
+    document.documentElement.setAttribute("data-theme", themeToggle.checked ? "light" : "dark");
+    themeToggle.addEventListener("change", () => {
+      const theme = themeToggle.checked ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    });
+  </script>
 </body>
+
 </html>
