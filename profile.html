@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -86,7 +86,7 @@
       padding: 1.5rem;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .card h2 {
@@ -105,6 +105,7 @@
     }
 
     .btn {
+      display: block;
       width: 100%;
       padding: 0.75rem;
       color: #fff;
@@ -115,6 +116,8 @@
       cursor: pointer;
       transition: background 0.2s;
       margin-bottom: 1rem;
+      text-align: center;
+      text-decoration: none;
     }
 
     .btn-warning {
@@ -125,11 +128,11 @@
       background: #f57f17;
     }
 
-    .delete-btn {
+    .btn-danger {
       background: var(--accent);
     }
 
-    .delete-btn:hover {
+    .btn-danger:hover {
       background: #c62828;
     }
 
@@ -154,22 +157,29 @@
   </header>
 
   <main>
+    <!-- Carte d’infos personnelles -->
     <div class="card">
-      <h2>Informations</h2>
+      <h2>Informations personnelles</h2>
       <p><span class="label">Nom :</span> <span id="info-nom"></span></p>
       <p><span class="label">Prénom :</span> <span id="info-prenom"></span></p>
       <p><span class="label">Email :</span> <span id="info-email"></span></p>
       <p><span class="label">Parcours :</span> <span id="info-parcours"></span></p>
-      <p><span class="label">Moyenne :</span> <span id="info-moyenne"></span></p>
+      <p><span class="label">Moyenne générale :</span> <span id="info-moyenne"></span></p>
     </div>
 
-    <!-- Bouton Réinitialiser le mot de passe -->
+    <!-- Boutons d’export -->
+    <a href="#" id="exportJSONBtn" class="btn btn-warning">
+      Télécharger mes données (JSON)
+    </a>
+    <a href="#" id="exportCSVBtn" class="btn btn-warning">
+      Télécharger mes données (CSV)
+    </a>
+
+    <!-- Actions -->
     <button class="btn btn-warning" id="resetPasswordBtn">
       Réinitialiser mon mot de passe
     </button>
-
-    <!-- Bouton Supprimer le compte -->
-    <button class="btn delete-btn" id="deleteAccount">
+    <button class="btn btn-danger" id="deleteAccount">
       Supprimer mon compte
     </button>
   </main>
@@ -180,52 +190,6 @@
 
   <script src="js/utils.js"></script>
   <script src="js/profile.js"></script>
-  <script>
-    // Déconnexion
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "index.html";
-    });
-
-    // Réinit mot de passe depuis Profil
-    document.getElementById("resetPasswordBtn").addEventListener("click", async () => {
-      const user = JSON.parse(localStorage.getItem("utilisateur") || "{}");
-      if (!user.email) {
-        alert("Utilisateur non connecté.");
-        return;
-      }
-      try {
-        await apiFetch("utilisateurs/reset-password-request", {
-          method: "POST",
-          body: JSON.stringify({ email: user.email })
-        });
-        alert("Un e-mail de réinitialisation a été envoyé à " + user.email);
-      } catch (err) {
-        alert(err.message);
-      }
-    });
-
-    // Suppression de compte avec confirmation
-    document.getElementById("deleteAccount").addEventListener("click", async () => {
-      const nom = JSON.parse(localStorage.getItem("utilisateur") || "{}").nom;
-      const saisie = prompt(`Tapez votre nom (« ${nom} ») pour confirmer la suppression :`);
-      if (saisie === nom) {
-        try {
-          await apiFetch("utilisateurs/me", {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-          });
-          alert("Compte supprimé.");
-          localStorage.clear();
-          window.location.href = "index.html";
-        } catch {
-          alert("Erreur lors de la suppression.");
-        }
-      } else {
-        alert("Nom incorrect, suppression annulée.");
-      }
-    });
-  </script>
 </body>
 
 </html>

@@ -7,27 +7,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     return window.location.href = "index.html";
   }
 
-  // ① Récupérer les infos de l'utilisateur
+  // ① Récupération des infos utilisateur
   let utilisateur;
   try {
     utilisateur = await apiFetch("utilisateurs/me", {
       headers: { Authorization: `Bearer ${token}` }
     });
   } catch (err) {
-    console.error("Erreur GET /utilisateurs/me :", err);
+    console.error("GET /utilisateurs/me error:", err);
     alert(err.message || "Impossible de charger le profil.");
     return;
   }
 
-  // Affichage des infos
+  // Affiche les infos dans la page
   document.getElementById("info-nom").textContent = utilisateur.nom;
   document.getElementById("info-prenom").textContent = utilisateur.prenom;
   document.getElementById("info-email").textContent = utilisateur.email;
   document.getElementById("info-parcours").textContent = utilisateur.parcours;
 
-  // ② Calculer et afficher la moyenne générale
+  // ② Récupération des notes pour calcul de moyenne ET pour export
+  let notes = [];
   try {
-    const notes = await apiFetch("notes", {
+    notes = await apiFetch("notes", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const totalCoef = notes.reduce((sum, n) => sum + n.coefficient, 0);
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const moyenne = totalCoef > 0 ? (totalPond / totalCoef).toFixed(2) : "N/A";
     document.getElementById("info-moyenne").textContent = moyenne;
   } catch (err) {
-    console.error("Erreur GET /notes :", err);
+    console.error("GET /notes error:", err);
     document.getElementById("info-moyenne").textContent = "Erreur";
   }
 
@@ -61,8 +62,54 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.clear();
       window.location.href = "index.html";
     } catch (err) {
-      console.error("Erreur DELETE /utilisateurs/me :", err);
+      console.error("DELETE /utilisateurs/me error:", err);
       alert(err.message || "Erreur lors de la suppression.");
     }
+  });
+
+  // ⑤ Réinitialiser mot de passe
+  document.getElementById("resetPasswordBtn").addEventListener("click", async () => {
+    try {
+      await apiFetch("utilisateurs/reset-password-request", {
+        method: "POST",
+        body: JSON.stringify({ email: utilisateur.email })
+      });
+      alert("Lien de réinitialisation envoyé !");
+    } catch (err) {
+      console.error("POST /reset-password-request error:", err);
+      alert(err.message || "Impossible d’envoyer l’email.");
+    }
+  });
+
+  // ⑥ Export JSON
+  document.getElementById("exportJSONBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const data = { utilisateur, notes };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mes_donnees_moyennes.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // ⑦ Export CSV
+  document.getElementById("exportCSVBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const lines = [
+      "Nom;Prénom;Email;Parcours;Moyenne générale",
+      `${utilisateur.nom};${utilisateur.prenom};${utilisateur.email};${utilisateur.parcours};${document.getElementById("info-moyenne").textContent}`,
+      "",
+      "Code;Épreuve;Note;Coefficient",
+      ...notes.map(n => `${n.code};${n.nom};${n.note.toFixed(2)};${n.coefficient}`)
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mes_donnees_moyennes.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   });
 });
