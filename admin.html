@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin – Statistiques Moyennes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #2e2e2e;
+            color: #f1f1f1;
+            margin: 0;
+        }
+
+        header {
+            padding: 1rem;
+            background: #3c3c3c;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        select,
+        button {
+            padding: .5rem;
+            font-size: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #555;
+            padding: .5rem;
+            text-align: center;
+        }
+
+        th {
+            background: #3c3c3c;
+        }
+
+        canvas {
+            max-width: 600px;
+            margin-top: 2rem;
+            background: #fff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🔒 Espace Admin</h1>
+        <button id="logoutBtn">Déconnexion</button>
+    </header>
+    <main>
+        <div class="form-group">
+            <label>Parcours :
+                <select id="filtre-parcours">
+                    <option value="">-- Sélectionner --</option>
+                    <option value="M1 EEA MTI">M1 EEA MTI</option>
+                    <option value="M1 EEA ISHM">M1 EEA ISHM</option>
+                    <option value="M1 EEA IMEEN">M1 EEA IMEEN</option>
+                </select>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="radio" name="type" value="general" checked> Classement général
+            </label>
+            <label>
+                <input type="radio" name="type" value="ue"> Classement UE
+            </label>
+        </div>
+        <div class="form-group" id="ue-group" style="display:none;">
+            <label>Code UE :
+                <input type="text" id="filtre-ue" placeholder="ex: 871.1">
+            </label>
+        </div>
+        <button id="btnAfficher">Afficher classement</button>
+
+        <table id="tblClassement">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Valeur</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <canvas id="histogramme"></canvas>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token || !JSON.parse(localStorage.getItem("utilisateur")).isAdmin) {
+            alert("Accès admin requis.");
+            window.location.href = "index.html";
+        }
+
+        // Toggle champ UE
+        document.querySelectorAll('input[name="type"]').forEach(radio => {
+            radio.addEventListener("change", () => {
+                document.getElementById("ue-group").style.display =
+                    radio.value === "ue" ? "block" : "none";
+            });
+        });
+
+        document.getElementById("btnAfficher").addEventListener("click", async () => {
+            const parcours = document.getElementById("filtre-parcours").value;
+            const type = document.querySelector('input[name="type"]:checked').value;
+            const code = document.getElementById("filtre-ue").value.trim();
+            if (!parcours) return alert("Choisissez un parcours.");
+
+            // Construire l’URL
+            let url = `/api/admin/classement?parcours=${encodeURIComponent(parcours)}&type=${type}`;
+            if (type === "ue") {
+                if (!code) return alert("Indiquez le code UE.");
+                url += `&code=${encodeURIComponent(code)}`;
+            }
+
+            // 1) Classement
+            const data = await apiFetch(url, { headers: { Authorization: `Bearer ${token}` } });
+            const tbody = document.querySelector("#tblClassement tbody");
+            tbody.innerHTML = "";
+            data.forEach(item => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `<td>${item.nom}</td><td>${item.prenom}</td>
+                        <td>${type === "general" ? item.moyenne.toFixed(2) : item.note.toFixed(2)}</td>`;
+                tbody.appendChild(tr);
+            });
+
+            // 2) Histogramme (pour UE uniquement)
+            const ctx = document.getElementById("histogramme").getContext("2d");
+            if (type === "ue") {
+                const notes = await apiFetch(
+                    `/api/admin/histogram?parcours=${encodeURIComponent(parcours)}&code=${encodeURIComponent(code)}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: notes.map((_, i) => i + 1),
+                        datasets: [{ label: `Notes UE ${code}`, data: notes }]
+                    },
+                    options: { scales: { x: { title: { display: true, text: "Étudiant" } }, y: { beginAtZero: true, max: 20 } } }
+                });
+            } else {
+                // Effacer si existant
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            }
+        });
+
+        document.getElementById("logoutBtn").onclick = () => {
+            localStorage.clear();
+            window.location.href = "index.html";
+        };
+    </script>
+</body>
+
+</html>
