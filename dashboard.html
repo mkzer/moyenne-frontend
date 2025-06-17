@@ -135,6 +135,7 @@
         td {
             padding: 0.75rem;
             border: 1px solid var(--border);
+            text-align: center;
         }
 
         th {
@@ -186,6 +187,7 @@
     <div class="wrapper">
         <h1>📊 Tableau de notes</h1>
 
+        <!-- Formulaire d'ajout manuel (visible si parcours "Autre") -->
         <form id="noteForm" class="hidden">
             <input name="code" type="text" placeholder="Code EC (871.1)" required>
             <input name="nom" type="text" placeholder="Nom de l'EC" required>
@@ -201,11 +203,12 @@
                         <th>Code</th>
                         <th colspan="2">Nom</th>
                         <th>Note</th>
+                        <th>Rang</th>
                         <th>Coef</th>
                     </tr>
                 </thead>
                 <tbody id="tableau-notes">
-                    <!-- généré dynamiquement -->
+                    <!-- rempli dynamiquement par js/dashboard.js -->
                 </tbody>
             </table>
         </div>
